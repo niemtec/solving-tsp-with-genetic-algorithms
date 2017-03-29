@@ -13,24 +13,19 @@ public class Lab15 {
 	//Determine the length of the array first by loading it temporarily and measuring it
 	static double[][] matrixDimensionCountArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
 	static int matrixSize = matrixDimensionCountArray.length;
-
 	//Create the array object
 	public static double[][] distanceArray = new double[matrixSize][matrixSize];
 
 	public static void main(String args[]) {
-
-
 		//Load the array to memory
 		distanceArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
 
 		//Representation vector
 		int[] representation = new int[matrixSize];
-
 	}
 
 	/**
 	 * Fitness Function for the Travelling Salesman Problem
-	 *
 	 * @param numberOfCities number of cities to visit within the tour
 	 * @param tour           a list of integers of size N (tour taken by the salesman)
 	 * @param matrix         an NxN matrix containing the distances between each city
