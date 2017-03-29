@@ -10,15 +10,18 @@ import java.util.List;
  */
 
 public class Lab15 {
-	public static void main(String args[]) {
-		//Determine the length of the array first by loading it temporarily and measuring it
-		double[][] matrixDimensionCountArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
-		int matrixSize = matrixDimensionCountArray.length;
+	//Determine the length of the array first by loading it temporarily and measuring it
+	static double[][] matrixDimensionCountArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
+	static int matrixSize = matrixDimensionCountArray.length;
 
-		//Create the array object
-		double[][] citiesArray = new double[matrixSize][matrixSize];
+	//Create the array object
+	public static double[][] distanceArray = new double[matrixSize][matrixSize];
+
+	public static void main(String args[]) {
+
+
 		//Load the array to memory
-		citiesArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
+		distanceArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
 
 		//Representation vector
 		int[] representation = new int[matrixSize];
@@ -33,8 +36,8 @@ public class Lab15 {
 	 * @param matrix         an NxN matrix containing the distances between each city
 	 * @return the tour length s (the fitness, lower is better)
 	 */
-	private static int FitnessFunction(int numberOfCities, int[] tour, double[][] matrix) {
-		int s = 0;
+	private static double FitnessFunction(int numberOfCities, int[] tour, double[][] matrix) {
+		double s = 0.0;
 		for (int i = 1; i <= numberOfCities - 1; i++) {
 			int a = tour[i];
 			int b = tour[i + 1];
@@ -45,6 +48,18 @@ public class Lab15 {
 		s = s + GetDistance(endCity, startCity);
 
 		return s;
+	}
+
+	/**
+	 * Calculates the distance between city A and B
+	 *
+	 * @param a city A
+	 * @param b city B
+	 * @return distance between city A and B
+	 */
+	private static double GetDistance(int a, int b) {
+		double distance = distanceArray[a][b];
+		return distance;
 	}
 
 	private static void GenerateCityNumbers(int numberOfCities) {
