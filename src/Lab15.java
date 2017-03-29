@@ -1,5 +1,3 @@
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,6 +23,32 @@ public class Lab15 {
 		//Representation vector
 		int[] representation = new int[matrixSize];
 
+	}
+
+	/**
+	 * Fitness Function for the Travelling Salesman Problem
+	 *
+	 * @param numberOfCities number of cities to visit within the tour
+	 * @param tour           a list of integers of size N (tour taken by the salesman)
+	 * @param matrix         an NxN matrix containing the distances between each city
+	 * @return the tour length s (the fitness, lower is better)
+	 */
+	private static int FitnessFunction(int numberOfCities, int[] tour, double[][] matrix) {
+		int s = 0;
+		for (int i = 1; i <= numberOfCities - 1; i++) {
+			int a = tour[i];
+			int b = tour[i + 1];
+			s = s + GetDistance(a, b);
+		}
+		int endCity = tour[numberOfCities];
+		int startCity = tour[1];
+		s = s + GetDistance(endCity, startCity);
+
+		return s;
+	}
+
+	private static void GenerateCityNumbers(int numberOfCities) {
+		//double[]
 	}
 
 	private static void RandomPermutation(int numberOfCities) {
