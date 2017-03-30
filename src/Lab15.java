@@ -27,5 +27,17 @@ public class Lab15 {
 
     }
 
+    private static void LoadDataFile(int dataSize) {
+        String baseFileName = "data/TSP_";
+        String baseFileExtension = ".txt";
+        String baseFileLocation = baseFileName + Integer.toString(dataSize) + baseFileExtension;
+
+        matrixDimensionCountArray = TSP.ReadArrayFile(baseFileLocation, " ");
+        matrixSize = matrixDimensionCountArray.length;
+        distanceArray = new double[matrixSize][matrixSize];
+        distanceArray = TSP.ReadArrayFile(baseFileLocation, " ");
+
+        System.out.println(">>> TSP DATA LOADED <<<");
+    }
 
 }
