@@ -16,27 +16,35 @@ import java.util.List;
 
 public class Lab15 {
     //Determine the length of the array first by loading it temporarily and measuring it
-    static double[][] matrixDimensionCountArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
-    static int matrixSize = matrixDimensionCountArray.length;
+    static double[][] matrixDimensionCountArray;
+    static int matrixSize;
     //Create the array object
-    public static double[][] distanceArray = new double[matrixSize][matrixSize];
+    public static double[][] distanceArray;
 
     public static void main(String args[]) {
-        //Load the array to memory
-        distanceArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
+        LoadDataFile(48);
 
-        //Representation vector
-        int[] representation = new int[matrixSize];
+
 
         //TODO TESTING AREA >>>
         List<Integer> a = new ArrayList<>();
         a = Utilities.PopulateCities(3);
         System.out.println(a);
         a = Utilities.PermuteTour(a);
-//		System.out.println(a);
-//		a = Permutation.RandPerm(3);
-//		System.out.print(a);
+
     }
 
+    private static void LoadDataFile(int dataSize) {
+        String baseFileName = "data/TSP_";
+        String baseFileExtension = ".txt";
+        String baseFileLocation = baseFileName + Integer.toString(dataSize) + baseFileExtension;
+
+        matrixDimensionCountArray = TSP.ReadArrayFile(baseFileLocation, " ");
+        matrixSize = matrixDimensionCountArray.length;
+        distanceArray = new double[matrixSize][matrixSize];
+        distanceArray = TSP.ReadArrayFile(baseFileLocation, " ");
+
+        System.out.println(">>> TSP DATA LOADED <<<");
+    }
 
 }
