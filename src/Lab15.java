@@ -22,7 +22,15 @@ public class Lab15 {
 
 		//Representation vector
 		int[] representation = new int[matrixSize];
-	}
+
+        //TODO TESTING AREA >>>
+        int[] temp = new int[3];
+        temp[0] = 1;
+        temp[1] = 2;
+        temp[2] = 3;
+
+        Permutation.PermuteArray(temp);
+    }
 
 	/**
 	 * Fitness Function for the Travelling Salesman Problem
