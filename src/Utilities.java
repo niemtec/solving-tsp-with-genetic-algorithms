@@ -138,4 +138,26 @@ public class Utilities {
         double distance = Lab15.distanceArray[a][b];
         return distance;
     }
+
+	/**
+	 * Method used to load the TSP distance data files of various sizes
+	 *
+	 * @param dataSize the size of the data file
+	 */
+	static void LoadDataFile(int dataSize) {
+		String baseFileName = "data/TSP_";
+		String baseFileExtension = ".txt";
+		String baseFileLocation = baseFileName + Integer.toString(dataSize) + baseFileExtension;
+
+		try {
+			Lab15.matrixDimensionCountArray = TSP.ReadArrayFile(baseFileLocation, " ");
+		} catch (Exception e) {
+			System.out.println(e.getClass() + " === FILE NOT FOUND ===");
+		}
+		Lab15.matrixSize = Lab15.matrixDimensionCountArray.length;
+		Lab15.distanceArray = new double[Lab15.matrixSize][Lab15.matrixSize];
+		Lab15.distanceArray = TSP.ReadArrayFile(baseFileLocation, " ");
+
+		System.out.println("=== TSP DATA LOADED ===");
+	}
 }

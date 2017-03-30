@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * The Travelling Salesperson Problem
  * Laboratory 15 Worksheet
@@ -15,27 +12,16 @@ import java.util.List;
  */
 
 public class Lab15 {
-    //Determine the length of the array first by loading it temporarily and measuring it
-	 static double[][] matrixDimensionCountArray;
+	//Determine the length of the array first by loading it temporarily and measuring it
+	static double[][] matrixDimensionCountArray;
 	static int matrixSize;
 	public static double[][] distanceArray;
 
-    public static void main(String args[]) {
+	public static void main(String args[]) {
+		int numberOfRepeats = 0;
+		int numberOfIterations = 0;
+		Utilities.LoadDataFile(48);
 
 
-	 }
-
-    private static void LoadDataFile(int dataSize) {
-        String baseFileName = "data/TSP_";
-        String baseFileExtension = ".txt";
-        String baseFileLocation = baseFileName + Integer.toString(dataSize) + baseFileExtension;
-
-        matrixDimensionCountArray = TSP.ReadArrayFile(baseFileLocation, " ");
-        matrixSize = matrixDimensionCountArray.length;
-        distanceArray = new double[matrixSize][matrixSize];
-        distanceArray = TSP.ReadArrayFile(baseFileLocation, " ");
-
-        System.out.println(">>> TSP DATA LOADED <<<");
-    }
-
+	}
 }
