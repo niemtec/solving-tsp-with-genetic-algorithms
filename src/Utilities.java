@@ -70,19 +70,6 @@ public class Utilities {
     }
 
     /**
-     * Calculates the distance between city A and B
-     *
-     * @param a city A
-     * @param b city B
-     * @return distance between city A and B
-     */
-    private static double GetDistance(int a, int b) {
-        //Remember: Java is ROW major, this means that ROWs come first
-        double distance = Lab15.distanceArray[a][b];
-        return distance;
-    }
-
-    /**
      * Prints array as a matrix format
      *
      * @param array input array to be printed
@@ -119,5 +106,36 @@ public class Utilities {
         tour.set(j, temp);
 
         return tour;
+    }
+
+    public static double ScoreTour(List<Integer> tour) {
+        double score = 0;
+        int tourSize = tour.size();
+        int cityA, cityB;
+        for (int i = 0; i <= tourSize; i++) {
+            cityA = tour.get(i);
+            cityB = tour.get(i + 1);
+            score = score + GetDistance(cityA, cityB);
+        }
+
+        //Return to the starting city
+        cityA = tour.get(tourSize);
+        cityB = tour.get(0);
+        score = score + GetDistance(cityA, cityB);
+
+        return score;
+    }
+
+    /**
+     * Calculates the distance between city A and B
+     *
+     * @param a city A
+     * @param b city B
+     * @return distance between city A and B
+     */
+    private static double GetDistance(int a, int b) {
+        //Remember: Java is ROW major, this means that ROWs come first
+        double distance = Lab15.distanceArray[a][b];
+        return distance;
     }
 }
