@@ -24,4 +24,12 @@ public class Lab15 {
 
 
 	}
+
+	private static void RMHC(int numberOfIterations) {
+		//TODO Get the starting fitness of the current tour
+		//TODO Make a small change
+		//TODO Get Fitness of new tour
+		//TODO Compare fitnesses
+		//TODO choose next values
+	}
 }
