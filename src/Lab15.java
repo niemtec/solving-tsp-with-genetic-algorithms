@@ -25,17 +25,6 @@ public class Lab15 {
         //Load the array to memory
         distanceArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
 
-        //Representation vector
-        int[] representation = new int[matrixSize];
-
-        //TODO TESTING AREA >>>
-        List<Integer> a = new ArrayList<>();
-        a = Utilities.PopulateCities(3);
-        System.out.println(a);
-        a = Utilities.PermuteTour(a);
-//		System.out.println(a);
-//		a = Permutation.RandPerm(3);
-//		System.out.print(a);
     }
 
 
