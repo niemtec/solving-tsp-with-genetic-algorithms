@@ -16,16 +16,14 @@ import java.util.List;
 
 public class Lab15 {
     //Determine the length of the array first by loading it temporarily and measuring it
-    static double[][] matrixDimensionCountArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
-    static int matrixSize = matrixDimensionCountArray.length;
-    //Create the array object
-    public static double[][] distanceArray = new double[matrixSize][matrixSize];
+	 static double[][] matrixDimensionCountArray;
+	static int matrixSize;
+	public static double[][] distanceArray;
 
     public static void main(String args[]) {
-        //Load the array to memory
-        distanceArray = TSP.ReadArrayFile("data/TSP_48.txt", " ");
 
-    }
+
+	 }
 
     private static void LoadDataFile(int dataSize) {
         String baseFileName = "data/TSP_";
