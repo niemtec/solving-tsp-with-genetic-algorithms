@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class Utilities {
@@ -24,5 +27,22 @@ public class Utilities {
             rand.setSeed(System.nanoTime());
         }
         return ((b - a) * rand.nextDouble() + a);
+    }
+
+    public static ArrayList<Integer> PopulateCities(int numberOfCities) {
+        ArrayList<Integer> tour = new ArrayList<>();
+        //Populate startingPermutation with city numbers
+        for (int i = 1; i <= numberOfCities; i++) {
+            tour.add(i);
+        }
+        return tour;
+    }
+
+    public static List<Integer> PermuteTour(List<Integer> tour) {
+        List<Integer> resultantPermutation = new ArrayList<>();
+        System.out.println("Initial List: " + tour);
+        Collections.shuffle(tour);
+        System.out.println("Shuffled List: " + tour);
+        return tour;
     }
 }
