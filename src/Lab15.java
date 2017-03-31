@@ -7,6 +7,8 @@
  * Student ID: 1500408
  */
 
+import javax.rmi.CORBA.Util;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,15 +25,18 @@ public class Lab15 {
 		int numberOfRepeats = 0;
 		int numberOfIterations = 0;
 		Utilities.LoadDataFile(48);
+		//Utilities.PrintArray(distanceArray);
+		System.out.print("TEST DISTANCE: ");
+		Utilities.GetDistance(0, 0);
 
 		//Generate the first base tour
 		List<Integer> tour = Utilities.PopulateCities(matrixSize);
-		System.out.println(tour);
-		//TODO Distance Array not loading
-		System.out.println(distanceArray);
-		RMHC(tour, numberOfIterations);
+		System.out.println("Tour: " + tour);
 
+		System.out.println(Utilities.FitnessFunction(tour));
 
+		//System.out.println(distanceArray);
+		//RMHC(tour, numberOfIterations);
 	}
 
 	private static List<Integer> RMHC(List<Integer> tour, int numberOfIterations) {
@@ -39,7 +44,7 @@ public class Lab15 {
 		double oldFitness, newFitness, currentFitness;
 
 		//TODO Get the starting fitness of the current tour
-		currentFitness = Utilities.ScoreTour(tour);
+		currentFitness = Utilities.FitnessFunction(tour);
 		currentTour = tour;
 
 		System.out.println("=== Computing RMHC... Quiet Please ===");
@@ -52,7 +57,7 @@ public class Lab15 {
 			//TODO Make a small change
 			currentTour = Utilities.Swap(tour);
 			//TODO Get Fitness of new tour
-			currentFitness = Utilities.ScoreTour(currentTour);
+			currentFitness = Utilities.FitnessFunction(currentTour);
 			//TODO Compare fitnesses
 			//We want to get the lowest possible tour length
 			if (currentFitness >= oldFitness) {
