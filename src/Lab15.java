@@ -23,7 +23,7 @@ public class Lab15 {
 
 	public static void main(String args[]) {
 		int numberOfRepeats = 1;
-		int numberOfIterations = 1000;
+		int numberOfIterations = 100000;
 		List<Integer> tour;
 
 		Utilities.LoadDataFile(48);
@@ -33,6 +33,6 @@ public class Lab15 {
 		//Set a random point in the search space
 		tour = Utilities.PermuteTour(tour);
 		System.out.println("Tour: " + tour);
-		//RMHC(tour, numberOfIterations);
+		Algorithms.RMHC(tour, numberOfIterations);
 	}
 }

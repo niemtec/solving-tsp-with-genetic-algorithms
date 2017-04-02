@@ -8,7 +8,7 @@ public class Algorithms {
 	 * @param numberOfIterations the total number of iterations to run the algorithm for
 	 * @return returns the most optimal tour after a given number of iterations
 	 */
-	private static List<Integer> RMHC(List<Integer> tour, int numberOfIterations) {
+	public static List<Integer> RMHC(List<Integer> tour, int numberOfIterations) {
 		List<Integer> oldTour, currentTour;
 		double oldFitness, currentFitness;
 
