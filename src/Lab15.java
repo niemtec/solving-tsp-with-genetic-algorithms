@@ -33,41 +33,7 @@ public class Lab15 {
 		//Set a random point in the search space
 		tour = Utilities.PermuteTour(tour);
 		System.out.println("Tour: " + tour);
-		RMHC(tour, numberOfIterations, false);
-
+		//RMHC(tour, numberOfIterations);
 	}
 
-	private static List<Integer> RMHC(List<Integer> tour, int numberOfIterations, boolean printIterations) {
-		List<Integer> oldTour, currentTour;
-		double oldFitness, currentFitness;
-
-		currentTour = tour;
-		currentFitness = Utilities.FitnessFunction(currentTour);
-
-		System.out.println("=== Computing RMHC... Quiet Please ===");
-
-		for (int i = 1; i <= numberOfIterations; i++) {
-			if (printIterations == true) {
-				/////////////System.out.println("Tour: " + currentTour);
-				System.out.println(i + ") Fitness: " + currentFitness);
-			}
-			//Save old values before making any changes
-			oldTour = currentTour;
-			oldFitness = currentFitness;
-
-			//Make a small change
-			currentTour = Utilities.Swap(oldTour);
-			////////////System.out.println("NEW TOUR: " + currentTour);
-			//Calculate newest fitness
-			currentFitness = Utilities.FitnessFunction(currentTour);
-
-			//We want to get the lowest possible tour length
-			if (currentFitness >= oldFitness) {
-				currentFitness = oldFitness;
-				currentTour = oldTour;
-			}
-		}
-		System.out.println("Fitness: " + currentFitness);
-		return currentTour;
-	}
 }
