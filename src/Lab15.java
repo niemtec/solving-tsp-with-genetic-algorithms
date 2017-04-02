@@ -35,5 +35,4 @@ public class Lab15 {
 		System.out.println("Tour: " + tour);
 		//RMHC(tour, numberOfIterations);
 	}
-
 }
