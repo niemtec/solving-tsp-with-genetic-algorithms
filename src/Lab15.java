@@ -23,7 +23,7 @@ public class Lab15 {
 
 	public static void main(String args[]) {
 		int numberOfRepeats = 1;
-		int numberOfIterations = 100;
+		int numberOfIterations = 1000;
 		List<Integer> tour;
 
 		Utilities.LoadDataFile(48);
@@ -33,7 +33,7 @@ public class Lab15 {
 		//Set a random point in the search space
 		tour = Utilities.PermuteTour(tour);
 		System.out.println("Tour: " + tour);
-		RMHC(tour, numberOfIterations, true);
+		RMHC(tour, numberOfIterations, false);
 
 	}
 
@@ -48,7 +48,7 @@ public class Lab15 {
 
 		for (int i = 1; i <= numberOfIterations; i++) {
 			if (printIterations == true) {
-				System.out.println("Tour: " + currentTour);
+				/////////////System.out.println("Tour: " + currentTour);
 				System.out.println(i + ") Fitness: " + currentFitness);
 			}
 			//Save old values before making any changes
@@ -57,7 +57,7 @@ public class Lab15 {
 
 			//Make a small change
 			currentTour = Utilities.Swap(oldTour);
-			System.out.println("NEW TOUR: " + currentTour);
+			////////////System.out.println("NEW TOUR: " + currentTour);
 			//Calculate newest fitness
 			currentFitness = Utilities.FitnessFunction(currentTour);
 

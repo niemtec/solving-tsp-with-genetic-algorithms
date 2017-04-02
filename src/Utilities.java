@@ -101,8 +101,6 @@ public class Utilities {
 		}
 	}
 
-	//TODO Fix the propagation error.
-
 	/**
 	 * Performs a random small change (a swap) on a given tour
 	 *
@@ -111,15 +109,19 @@ public class Utilities {
 	 */
 	public static List<Integer> Swap(List<Integer> tour) {
 		int i = 0, j = 0;
+		int tourSize = tour.size();
 		//Choose two random elements of T where i ≠ j
 		while (i == j) {
-			i = UI(0, tour.size() - 1);
-			j = UI(0, tour.size() - 1);
+			i = UI(0, tourSize - 1);
+			j = UI(0, tourSize - 1);
 		}
 
 		//Swap the elements
 		int temp = tour.get(i);
-		tour.set(i, tour.get(i));
+		int temp2 = tour.get(j);
+
+		//Replace the first element
+		tour.set(i, temp2);
 		tour.set(j, temp);
 
 		return tour;
