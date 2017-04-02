@@ -23,7 +23,7 @@ public class Lab15 {
 
 	public static void main(String args[]) {
 		int numberOfRepeats = 1;
-		int numberOfIterations = 10000;
+		int numberOfIterations = 100;
 		List<Integer> tour;
 
 		Utilities.LoadDataFile(48);
@@ -33,26 +33,34 @@ public class Lab15 {
 		//Set a random point in the search space
 		tour = Utilities.PermuteTour(tour);
 		System.out.println("Tour: " + tour);
-		RMHC(tour, numberOfIterations);
+		RMHC(tour, numberOfIterations, true);
 
 	}
 
-	private static List<Integer> RMHC(List<Integer> tour, int numberOfIterations) {
-		List<Integer> oldTour, newTour, currentTour;
-		double oldFitness, newFitness, currentFitness;
+	private static List<Integer> RMHC(List<Integer> tour, int numberOfIterations, boolean printIterations) {
+		List<Integer> oldTour, currentTour;
+		double oldFitness, currentFitness;
 
-		currentFitness = Utilities.FitnessFunction(tour);
 		currentTour = tour;
+		currentFitness = Utilities.FitnessFunction(currentTour);
 
 		System.out.println("=== Computing RMHC... Quiet Please ===");
 
 		for (int i = 1; i <= numberOfIterations; i++) {
+			if (printIterations == true) {
+				System.out.println("Tour: " + currentTour);
+				System.out.println(i + ") Fitness: " + currentFitness);
+			}
 			//Save old values before making any changes
-			oldFitness = currentFitness;
 			oldTour = currentTour;
+			oldFitness = currentFitness;
 
-			currentTour = Utilities.Swap(currentTour);
+			//Make a small change
+			currentTour = Utilities.Swap(oldTour);
+			System.out.println("NEW TOUR: " + currentTour);
+			//Calculate newest fitness
 			currentFitness = Utilities.FitnessFunction(currentTour);
+
 			//We want to get the lowest possible tour length
 			if (currentFitness >= oldFitness) {
 				currentFitness = oldFitness;

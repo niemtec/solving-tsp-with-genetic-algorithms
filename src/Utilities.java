@@ -1,3 +1,5 @@
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -99,6 +101,8 @@ public class Utilities {
 		}
 	}
 
+	//TODO Fix the propagation error.
+
 	/**
 	 * Performs a random small change (a swap) on a given tour
 	 *
@@ -107,11 +111,13 @@ public class Utilities {
 	 */
 	public static List<Integer> Swap(List<Integer> tour) {
 		int i = 0, j = 0;
+		//Choose two random elements of T where i ≠ j
 		while (i == j) {
 			i = UI(0, tour.size() - 1);
 			j = UI(0, tour.size() - 1);
 		}
 
+		//Swap the elements
 		int temp = tour.get(i);
 		tour.set(i, tour.get(i));
 		tour.set(j, temp);
@@ -154,5 +160,18 @@ public class Utilities {
 		Lab15.distanceArray = TSP.ReadArrayFile(baseFileLocation, " ");
 
 		System.out.println("=== TSP DATA LOADED ===");
+	}
+
+
+	// Rounds decimals to 3d.p. then returns as string for printing
+	public static String RoundDecimal(double decimal) {
+		DecimalFormat df = new DecimalFormat("#.###");
+		df.setRoundingMode(RoundingMode.CEILING);
+		String output = df.format(decimal);
+		return output;
+	}
+
+	public static void RingSystemBell() {
+		java.awt.Toolkit.getDefaultToolkit().beep();
 	}
 }
