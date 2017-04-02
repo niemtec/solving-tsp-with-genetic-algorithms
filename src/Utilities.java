@@ -32,7 +32,7 @@ public class Utilities {
 	public static ArrayList<Integer> PopulateCities(int numberOfCities) {
 		ArrayList<Integer> tour = new ArrayList<>();
 		//Populate startingPermutation with city numbers
-		for (int i = 1; i <= numberOfCities; i++) {
+		for (int i = 0; i < numberOfCities; i++) {
 			tour.add(i);
 		}
 		return tour;
@@ -48,26 +48,29 @@ public class Utilities {
 
 	/**
 	 * Fitness Function for the Travelling Salesman Problem
+	 * Calculates the total distance travelled by the salesman
 	 *
 	 * @param tour a list of integers of size N (tour taken by the salesman)
 	 * @return the tour length s (the fitness, lower is better)
 	 */
 	public static double FitnessFunction(List<Integer> tour) {
 		int numberOfCities = Lab15.matrixSize;
-
+		int startCity, endCity, cityA, cityB;
 		double s = 0.0;
-		for (int i = 0; i <= numberOfCities; i++) {
-			int a = tour.get(i);
-			a = a - 1; //Correct for array shift
-			int b = tour.get(i + 1);
-			b = b - 1; //Correct for array shift
-			s = s + GetDistance(a, b);
+
+		for (int i = 0; i < numberOfCities; i++) {
+			if (i != numberOfCities - 1) {
+				cityA = tour.get(i);
+				cityB = tour.get(i + 1);
+				s = s + GetDistance(cityA, cityB);
+			} else {
+				break;
+			}
 		}
-
-		int endCity = tour.get(numberOfCities);
-		int startCity = tour.get(0);
+		startCity = tour.get(0);
+		endCity = tour.get(numberOfCities - 1);
+		//Add the return trip
 		s = s + GetDistance(endCity, startCity);
-
 		return s;
 	}
 
@@ -96,11 +99,17 @@ public class Utilities {
 		}
 	}
 
+	/**
+	 * Performs a random small change (a swap) on a given tour
+	 *
+	 * @param tour tour to be altered
+	 * @return altered version of the tour
+	 */
 	public static List<Integer> Swap(List<Integer> tour) {
 		int i = 0, j = 0;
 		while (i == j) {
-			i = UI(1, tour.size());
-			j = UI(1, tour.size());
+			i = UI(0, tour.size() - 1);
+			j = UI(0, tour.size() - 1);
 		}
 
 		int temp = tour.get(i);
@@ -110,25 +119,6 @@ public class Utilities {
 		return tour;
 	}
 
-//    //TODO Possible duplicate of the fitness function?
-//    public static double ScoreTour(List<Integer> tour) {
-//        double score = 0;
-//        int tourSize = tour.size();
-//        int cityA, cityB;
-//
-//        for (int i = 0; i <= tourSize; i++) {
-//            cityA = tour.get(i);
-//            cityB = tour.get(i + 1);
-//            score = score + GetDistance(cityA, cityB);
-//        }
-//
-//        //Return to the starting city
-//        cityA = tour.get(tourSize);
-//        cityB = tour.get(0);
-//        score = score + GetDistance(cityA, cityB);
-//
-//        return score;
-//    }
 
 	/**
 	 * Calculates the distance between city A and B
@@ -140,7 +130,7 @@ public class Utilities {
 	public static double GetDistance(int a, int b) {
 		//Remember: Java is ROW major, this means that ROWs come first
 		double distance = Lab15.distanceArray[a][b];
-		System.out.println("Distance: " + distance);
+		//System.out.println("Distance: " + distance);
 		return distance;
 	}
 

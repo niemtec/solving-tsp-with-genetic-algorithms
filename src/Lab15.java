@@ -22,28 +22,25 @@ public class Lab15 {
 	public static double[][] distanceArray;
 
 	public static void main(String args[]) {
-		int numberOfRepeats = 0;
-		int numberOfIterations = 0;
+		int numberOfRepeats = 1;
+		int numberOfIterations = 10000;
+		List<Integer> tour;
+
 		Utilities.LoadDataFile(48);
-		//Utilities.PrintArray(distanceArray);
-		System.out.print("TEST DISTANCE: ");
-		Utilities.GetDistance(0, 0);
-
 		//Generate the first base tour
-		List<Integer> tour = Utilities.PopulateCities(matrixSize);
+		tour = Utilities.PopulateCities(matrixSize);
+
+		//Set a random point in the search space
+		tour = Utilities.PermuteTour(tour);
 		System.out.println("Tour: " + tour);
+		RMHC(tour, numberOfIterations);
 
-		System.out.println(Utilities.FitnessFunction(tour));
-
-		//System.out.println(distanceArray);
-		//RMHC(tour, numberOfIterations);
 	}
 
 	private static List<Integer> RMHC(List<Integer> tour, int numberOfIterations) {
 		List<Integer> oldTour, newTour, currentTour;
 		double oldFitness, newFitness, currentFitness;
 
-		//TODO Get the starting fitness of the current tour
 		currentFitness = Utilities.FitnessFunction(tour);
 		currentTour = tour;
 
@@ -54,17 +51,13 @@ public class Lab15 {
 			oldFitness = currentFitness;
 			oldTour = currentTour;
 
-			//TODO Make a small change
-			currentTour = Utilities.Swap(tour);
-			//TODO Get Fitness of new tour
+			currentTour = Utilities.Swap(currentTour);
 			currentFitness = Utilities.FitnessFunction(currentTour);
-			//TODO Compare fitnesses
 			//We want to get the lowest possible tour length
 			if (currentFitness >= oldFitness) {
 				currentFitness = oldFitness;
 				currentTour = oldTour;
 			}
-			//TODO choose next values
 		}
 		System.out.println("Fitness: " + currentFitness);
 		return currentTour;
