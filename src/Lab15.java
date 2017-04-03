@@ -35,4 +35,8 @@ public class Lab15 {
 		System.out.println("Tour: " + tour);
 		Algorithms.RMHC(tour, numberOfIterations);
 	}
+
+	public static void RRHC(List<Integer> tour, int numberOfIterations, int numberOfRepeats) {
+
+	}
 }
