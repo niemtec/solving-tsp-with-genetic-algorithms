@@ -7,8 +7,6 @@
  * Student ID: 1500408
  */
 
-import javax.rmi.CORBA.Util;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -22,8 +20,8 @@ public class Lab15 {
 	public static double[][] distanceArray;
 
 	public static void main(String args[]) {
-		int numberOfRepeats = 1;
-		int numberOfIterations = 100000;
+		int numberOfRepeats;
+		int numberOfIterations = 100;
 		List<Integer> tour;
 
 		Utilities.LoadDataFile(48);
@@ -34,9 +32,48 @@ public class Lab15 {
 		tour = Utilities.PermuteTour(tour);
 		System.out.println("Tour: " + tour);
 		Algorithms.RMHC(tour, numberOfIterations);
+		RRHC(tour, numberOfIterations);
 	}
 
-	public static void RRHC(List<Integer> tour, int numberOfIterations, int numberOfRepeats) {
+	public static List<Integer> RRHC(List<Integer> tour, int numberOfIterations) {
+		int numberOfRepeats = 1000;
+		List<Integer> oldTour, currentTour, bestTour;
+		double oldFitness, currentFitness, bestFitness;
 
+		//Evaluate the fitness of the first tour
+		currentTour = tour;
+		currentFitness = Utilities.FitnessFunction(currentTour);
+
+		//Temporarily assume the first tour is the best
+		bestTour = currentTour;
+		bestFitness = Utilities.FitnessFunction(currentTour);
+
+		System.out.println("=== Computing RRHC... Quiet Please ===");
+
+		for (int r = 1; r <= numberOfRepeats; r++) {
+			for (int i = 1; i <= numberOfIterations; i++) {
+				//Save old values before making any changes
+				oldTour = currentTour;
+				oldFitness = currentFitness;
+
+				//Make a small change
+				currentTour = Utilities.Swap(oldTour);
+				//Calculate newest fitness
+				currentFitness = Utilities.FitnessFunction(currentTour);
+
+				//We want to get the lowest possible tour length
+				if (currentFitness >= oldFitness) {
+					currentFitness = oldFitness;
+					currentTour = oldTour;
+				}
+			}
+			//Choose the best solution across generations
+			if (currentFitness <= bestFitness) {
+				bestFitness = currentFitness;
+				bestTour = currentTour;
+			}
+		}
+		System.out.println("Fitness: " + bestFitness);
+		return bestTour;
 	}
 }
