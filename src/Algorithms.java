@@ -36,4 +36,53 @@ public class Algorithms {
 		System.out.println("Fitness: " + currentFitness);
 		return currentTour;
 	}
+
+	/**
+	 * Random Restart Hill Climber
+	 *
+	 * @param tour               the tour to be evaluated
+	 * @param numberOfIterations number of generations to run the algorithm for
+	 * @return returns the optimal tour
+	 */
+	public static List<Integer> RRHC(List<Integer> tour, int numberOfIterations) {
+		int numberOfRepeats = 1000;
+		List<Integer> oldTour, currentTour, bestTour;
+		double oldFitness, currentFitness, bestFitness;
+
+		//Evaluate the fitness of the first tour
+		currentTour = tour;
+		currentFitness = Utilities.FitnessFunction(currentTour);
+
+		//Temporarily assume the first tour is the best
+		bestTour = currentTour;
+		bestFitness = Utilities.FitnessFunction(currentTour);
+
+		System.out.println("=== Computing RRHC... Quiet Please ===");
+
+		for (int r = 1; r <= numberOfRepeats; r++) {
+			for (int i = 1; i <= numberOfIterations; i++) {
+				//Save old values before making any changes
+				oldTour = currentTour;
+				oldFitness = currentFitness;
+
+				//Make a small change
+				currentTour = Utilities.Swap(oldTour);
+				//Calculate newest fitness
+				currentFitness = Utilities.FitnessFunction(currentTour);
+
+				//We want to get the lowest possible tour length
+				if (currentFitness >= oldFitness) {
+					currentFitness = oldFitness;
+					currentTour = oldTour;
+				}
+			}
+			//Choose the best solution across generations
+			if (currentFitness <= bestFitness) {
+				bestFitness = currentFitness;
+				bestTour = currentTour;
+			}
+		}
+		System.out.println("Fitness: " + bestFitness);
+		return bestTour;
+	}
 }

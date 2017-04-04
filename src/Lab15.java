@@ -32,48 +32,7 @@ public class Lab15 {
 		tour = Utilities.PermuteTour(tour);
 		System.out.println("Tour: " + tour);
 		Algorithms.RMHC(tour, numberOfIterations);
-		RRHC(tour, numberOfIterations);
+		Algorithms.RRHC(tour, numberOfIterations);
 	}
 
-	public static List<Integer> RRHC(List<Integer> tour, int numberOfIterations) {
-		int numberOfRepeats = 1000;
-		List<Integer> oldTour, currentTour, bestTour;
-		double oldFitness, currentFitness, bestFitness;
-
-		//Evaluate the fitness of the first tour
-		currentTour = tour;
-		currentFitness = Utilities.FitnessFunction(currentTour);
-
-		//Temporarily assume the first tour is the best
-		bestTour = currentTour;
-		bestFitness = Utilities.FitnessFunction(currentTour);
-
-		System.out.println("=== Computing RRHC... Quiet Please ===");
-
-		for (int r = 1; r <= numberOfRepeats; r++) {
-			for (int i = 1; i <= numberOfIterations; i++) {
-				//Save old values before making any changes
-				oldTour = currentTour;
-				oldFitness = currentFitness;
-
-				//Make a small change
-				currentTour = Utilities.Swap(oldTour);
-				//Calculate newest fitness
-				currentFitness = Utilities.FitnessFunction(currentTour);
-
-				//We want to get the lowest possible tour length
-				if (currentFitness >= oldFitness) {
-					currentFitness = oldFitness;
-					currentTour = oldTour;
-				}
-			}
-			//Choose the best solution across generations
-			if (currentFitness <= bestFitness) {
-				bestFitness = currentFitness;
-				bestTour = currentTour;
-			}
-		}
-		System.out.println("Fitness: " + bestFitness);
-		return bestTour;
-	}
 }
