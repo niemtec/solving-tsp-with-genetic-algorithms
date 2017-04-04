@@ -40,9 +40,9 @@ public class Algorithms {
 	/**
 	 * Random Restart Hill Climber
 	 *
-	 * @param tour               the tour to be evaluated
+	 * @param tour               starting tour - will be modified using small change
 	 * @param numberOfIterations number of generations to run the algorithm for
-	 * @return returns the optimal tour
+	 * @return returns the most optimal tour after a given number of iterations
 	 */
 	public static List<Integer> RRHC(List<Integer> tour, int numberOfIterations) {
 		int numberOfRepeats = 1000;
@@ -84,5 +84,44 @@ public class Algorithms {
 		}
 		System.out.println("Fitness: " + bestFitness);
 		return bestTour;
+	}
+
+	/**
+	 * Stochastic Hill Climber
+	 *
+	 * @param tour               starting tour - will be modified using small change
+	 * @param numberOfIterations the total number of iterations to run the algorithm for
+	 * @return returns the most optimal tour after a given number of iterations
+	 */
+	public static List<Integer> SHC(List<Integer> tour, int numberOfIterations) {
+		List<Integer> oldTour, currentTour;
+		double oldFitness, currentFitness;
+
+		currentTour = tour;
+		currentFitness = Utilities.FitnessFunction(currentTour);
+
+		System.out.println("=== Computing SHC... Quiet Please ===");
+
+		for (int i = 1; i <= numberOfIterations; i++) {
+			//Save old values before making any changes
+			oldTour = currentTour;
+			oldFitness = currentFitness;
+
+			//Make a small change
+			currentTour = Utilities.Swap(oldTour);
+			//Calculate the newest fitness
+			currentFitness = Utilities.FitnessFunction(currentTour);
+
+			//We want to get the lowest possible tour length
+			int T = 25; //Parameter for the function -- here be magic
+			double p = 1 / (1 + Math.exp((oldFitness - currentFitness) / T));
+			if (Utilities.UI(0, 1) < p) {
+				//Accept the new solution
+				currentFitness = oldFitness;
+				currentTour = oldTour;
+			}
+		}
+		System.out.println("Fitness: " + currentFitness);
+		return currentTour;
 	}
 }
