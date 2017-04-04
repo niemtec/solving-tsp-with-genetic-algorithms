@@ -31,8 +31,8 @@ public class Lab15 {
 		//Set a random point in the search space
 		tour = Utilities.PermuteTour(tour);
 		System.out.println("Tour: " + tour);
-		Algorithms.RMHC(tour, numberOfIterations);
 		Algorithms.RRHC(tour, numberOfIterations);
 		Algorithms.SHC(tour, numberOfIterations);
+		Algorithms.RMHC(tour, numberOfIterations);
 	}
 }

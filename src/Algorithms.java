@@ -113,8 +113,8 @@ public class Algorithms {
 			currentFitness = Utilities.FitnessFunction(currentTour);
 
 			//We want to get the lowest possible tour length
-			int T = 25; //Parameter for the function -- here be magic
-			double p = 1 / (1 + Math.exp((oldFitness - currentFitness) / T));
+			int T = 50; //Parameter for the function -- here be magic
+			double p = 1 / (1 + Math.exp((currentFitness - oldFitness) / T));
 			if (Utilities.UI(0, 1) < p) {
 				//Accept the new solution
 				currentFitness = oldFitness;
