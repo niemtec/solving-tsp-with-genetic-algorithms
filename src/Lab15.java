@@ -35,4 +35,27 @@ public class Lab15 {
 		Algorithms.RRHC(tour, numberOfIterations);
 	}
 
+	public static void SHC(List<Integer> tour, int numberOfIterations) {
+		List<Integer> oldTour, currentTour;
+		double oldFitness, currentFitness;
+
+		currentTour = tour;
+		currentFitness = Utilities.FitnessFunction(currentTour);
+
+		System.out.println("=== Computing SHC... Quiet Please ===");
+
+		for (int i = 1; i <= numberOfIterations; i++) {
+			//Save old values before making any changes
+			oldTour = currentTour;
+			oldFitness = currentFitness;
+
+			//Make a small change
+			currentTour = Utilities.Swap(oldTour);
+			//Calculate the newest fitness
+			currentFitness = Utilities.FitnessFunction(currentTour);
+
+			//We want to get the lowest possible tour length
+			//TODO Implement the solution acceptance function here
+		}
+	}
 }
