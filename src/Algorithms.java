@@ -1,3 +1,4 @@
+import javax.rmi.CORBA.Util;
 import java.util.List;
 
 public class Algorithms {
@@ -113,9 +114,9 @@ public class Algorithms {
 			currentFitness = Utilities.FitnessFunction(currentTour);
 
 			//We want to get the lowest possible tour length
-			int T = 50; //Parameter for the function -- here be magic
-			double p = 1 / (1 + Math.exp((currentFitness - oldFitness) / T));
-			if (Utilities.UI(0, 1) < p) {
+			double p = CalculateAcceptanceProbability(currentFitness, oldFitness);
+			double random = Utilities.UR(0.0, 1.0);
+			if (random < p) {
 				//Accept the new solution
 				currentFitness = oldFitness;
 				currentTour = oldTour;
@@ -123,5 +124,22 @@ public class Algorithms {
 		}
 		System.out.println("Fitness: " + currentFitness);
 		return currentTour;
+	}
+
+	public static double CalculateAcceptanceProbability(double currentFitness, double oldFitness) {
+		//todo fix this, it returns strange numbers
+		double result, temp, p, e;
+
+		//Parameter for the function -- here be magic
+		double T = 48.00;
+		temp = currentFitness - oldFitness;
+		temp = temp / T;
+		e = Math.exp(temp);
+		e = 1.00 + e;
+		p = 1.00 / e;
+
+		//p = 1.0 - p;
+		System.out.println(p);
+		return p;
 	}
 }

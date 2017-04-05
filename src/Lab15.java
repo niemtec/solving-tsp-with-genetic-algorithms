@@ -21,7 +21,7 @@ public class Lab15 {
 
 	public static void main(String args[]) {
 		int numberOfRepeats;
-		int numberOfIterations = 100;
+		int numberOfIterations = 10000;
 		List<Integer> tour;
 
 		Utilities.LoadDataFile(48);
