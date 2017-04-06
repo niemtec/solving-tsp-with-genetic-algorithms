@@ -152,14 +152,15 @@ public class Algorithms {
 	}
 
 	public static double CalculateT(double currentFitness, double oldFitness) {
-		double t, p, fitnessDifference, temp;
-
+		double t, p, fitnessDifference, temp, logarithmic;
 		p = 0.03; //probability extrapolated from experiments
+
 		fitnessDifference = currentFitness - oldFitness;
+		temp = 1 / p;
+		temp = temp - 1;
+		logarithmic = Math.log(temp);
 
-		//TODO breakdown the fomula in order of operations
-
-		t = fitnessDifference / Math.log(1 / p - 1);
+		t = fitnessDifference / logarithmic;
 
 		System.out.println("T: " + t);
 		return t;
