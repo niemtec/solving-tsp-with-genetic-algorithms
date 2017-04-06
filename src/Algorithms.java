@@ -129,6 +129,7 @@ public class Algorithms {
 			p = CalculateAcceptanceProbability(newFitness, oldFitness, t);
 
 			random = Utilities.UR(0.0, 1.0);
+			//FIXME This doesn't work properly
 			if (random >= p) {
 				//Accept the new solution
 				newTour = newTour;
