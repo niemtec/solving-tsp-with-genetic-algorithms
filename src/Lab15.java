@@ -24,7 +24,7 @@ public class Lab15 {
 		int numberOfIterations = 10000;
 		List<Integer> tour;
 
-		Utilities.LoadDataFile(48);
+		Utilities.LoadDataFile(150);
 		//Generate the first base tour
 		tour = Utilities.PopulateCities(matrixSize);
 
@@ -36,18 +36,5 @@ public class Lab15 {
 		Algorithms.RMHC(tour, numberOfIterations);
 	}
 
-	public static double CalculateT(double currentFitness, double oldFitness) {
-		double t, p, fitnessDifference, temp;
 
-		p = 0.03; //probability extrapolated from experiments
-		fitnessDifference = currentFitness - oldFitness;
-
-		temp = 1 / p;
-		temp = temp - 1;
-		temp = Math.log(temp);
-
-		t = fitnessDifference / temp;
-
-		return t;
-	}
 }

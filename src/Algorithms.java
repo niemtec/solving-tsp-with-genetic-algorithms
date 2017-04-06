@@ -97,9 +97,15 @@ public class Algorithms {
 	public static List<Integer> SHC(List<Integer> tour, int numberOfIterations) {
 		List<Integer> oldTour, currentTour;
 		double oldFitness, currentFitness;
+		double t; // stores the current temperature parameter for SHC
+		double p; // solution acceptance probability
 
 		currentTour = tour;
 		currentFitness = Utilities.FitnessFunction(currentTour);
+
+		//todo calculate T once and keep it constant
+		//todo calculate p with each iteration
+		//Calculate acceptance probability of the current tour
 
 		System.out.println("=== Computing SHC... Quiet Please ===");
 
@@ -114,10 +120,14 @@ public class Algorithms {
 			currentFitness = Utilities.FitnessFunction(currentTour);
 
 			//We want to get the lowest possible tour length
-			double p = CalculateAcceptanceProbability(currentFitness, oldFitness);
-			double random = Utilities.UR(0.0, 1.0);
-			if (random < p) {
+
+
+			if (Utilities.UI(0, 1) < p) {
 				//Accept the new solution
+				currentFitness = currentFitness;
+				currentTour = currentTour;
+			} else {
+				//Keep the old solution
 				currentFitness = oldFitness;
 				currentTour = oldTour;
 			}
@@ -126,20 +136,32 @@ public class Algorithms {
 		return currentTour;
 	}
 
-	public static double CalculateAcceptanceProbability(double currentFitness, double oldFitness) {
-		//todo fix this, it returns strange numbers
-		double result, temp, p, e;
+	public static double CalculateAcceptanceProbability(double currentFitness, double oldFitness, double t) {
+		double p, fitnessDifference, temp, exponential, denominator, numerator;
+		fitnessDifference = currentFitness - oldFitness;
 
-		//Parameter for the function -- here be magic
-		double T = 48.00;
-		temp = currentFitness - oldFitness;
-		temp = temp / T;
-		e = Math.exp(temp);
-		e = 1.00 + e;
-		p = 1.00 / e;
+		temp = fitnessDifference / t;
+		exponential = Math.exp(temp);
+		denominator = 1 + exponential;
+		numerator = 1;
 
-		//p = 1.0 - p;
-		System.out.println(p);
+		p = numerator / denominator;
+
+		System.out.println("P: " + p);
 		return p;
+	}
+
+	public static double CalculateT(double currentFitness, double oldFitness) {
+		double t, p, fitnessDifference, temp;
+
+		p = 0.03; //probability extrapolated from experiments
+		fitnessDifference = currentFitness - oldFitness;
+
+		//TODO breakdown the fomula in order of operations
+
+		t = fitnessDifference / Math.log(1 / p - 1);
+
+		System.out.println("T: " + t);
+		return t;
 	}
 }
