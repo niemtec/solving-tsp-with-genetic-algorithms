@@ -10,32 +10,33 @@ public class Algorithms {
 	 * @return returns the most optimal tour after a given number of iterations
 	 */
 	public static List<Integer> RMHC(List<Integer> tour, int numberOfIterations) {
-		List<Integer> oldTour, currentTour;
-		double oldFitness, currentFitness;
+		List<Integer> oldTour, newTour;
+		double oldFitness, newFitness;
 
-		currentTour = tour;
-		currentFitness = Utilities.FitnessFunction(currentTour);
+		newTour = tour;
+		newFitness = Utilities.FitnessFunction(newTour);
 
 		System.out.println("=== Computing RMHC... Quiet Please ===");
 
 		for (int i = 1; i <= numberOfIterations; i++) {
 			//Save old values before making any changes
-			oldTour = currentTour;
-			oldFitness = currentFitness;
+			oldTour = newTour;
+			oldFitness = newFitness;
 
 			//Make a small change
-			currentTour = Utilities.Swap(oldTour);
+			newTour = Utilities.Swap(oldTour);
 			//Calculate newest fitness
-			currentFitness = Utilities.FitnessFunction(currentTour);
+			newFitness = Utilities.FitnessFunction(newTour);
 
 			//We want to get the lowest possible tour length
-			if (currentFitness >= oldFitness) {
-				currentFitness = oldFitness;
-				currentTour = oldTour;
+			if (newFitness > oldFitness) {
+				//If new fitness is higher, use the old values
+				newFitness = oldFitness;
+				newTour = oldTour;
 			}
 		}
-		System.out.println("Fitness: " + currentFitness);
-		return currentTour;
+		System.out.println("Fitness: " + newFitness);
+		return newTour;
 	}
 
 	/**
@@ -47,40 +48,40 @@ public class Algorithms {
 	 */
 	public static List<Integer> RRHC(List<Integer> tour, int numberOfIterations) {
 		int numberOfRepeats = 1000;
-		List<Integer> oldTour, currentTour, bestTour;
-		double oldFitness, currentFitness, bestFitness;
+		List<Integer> oldTour, newTour, bestTour;
+		double oldFitness, newFitness, bestFitness;
 
 		//Evaluate the fitness of the first tour
-		currentTour = tour;
-		currentFitness = Utilities.FitnessFunction(currentTour);
+		newTour = tour;
+		newFitness = Utilities.FitnessFunction(newTour);
 
 		//Temporarily assume the first tour is the best
-		bestTour = currentTour;
-		bestFitness = Utilities.FitnessFunction(currentTour);
+		bestTour = newTour;
+		bestFitness = Utilities.FitnessFunction(newTour);
 
 		System.out.println("=== Computing RRHC... Quiet Please ===");
 
 		for (int r = 1; r <= numberOfRepeats; r++) {
 			for (int i = 1; i <= numberOfIterations; i++) {
 				//Save old values before making any changes
-				oldTour = currentTour;
-				oldFitness = currentFitness;
+				oldTour = newTour;
+				oldFitness = newFitness;
 
 				//Make a small change
-				currentTour = Utilities.Swap(oldTour);
+				newTour = Utilities.Swap(oldTour);
 				//Calculate newest fitness
-				currentFitness = Utilities.FitnessFunction(currentTour);
+				newFitness = Utilities.FitnessFunction(newTour);
 
 				//We want to get the lowest possible tour length
-				if (currentFitness >= oldFitness) {
-					currentFitness = oldFitness;
-					currentTour = oldTour;
+				if (newFitness >= oldFitness) {
+					newFitness = oldFitness;
+					newTour = oldTour;
 				}
 			}
 			//Choose the best solution across generations
-			if (currentFitness <= bestFitness) {
-				bestFitness = currentFitness;
-				bestTour = currentTour;
+			if (newFitness <= bestFitness) {
+				bestFitness = newFitness;
+				bestTour = newTour;
 			}
 		}
 		System.out.println("Fitness: " + bestFitness);
@@ -95,50 +96,55 @@ public class Algorithms {
 	 * @return returns the most optimal tour after a given number of iterations
 	 */
 	public static List<Integer> SHC(List<Integer> tour, int numberOfIterations) {
-		List<Integer> oldTour, currentTour;
-		double oldFitness, currentFitness;
+		List<Integer> oldTour, newTour, newTourTemp;
+		double oldFitness, newFitness, newFitnessTemp, random;
 		double t; // stores the current temperature parameter for SHC
 		double p; // solution acceptance probability
 
-		currentTour = tour;
-		currentFitness = Utilities.FitnessFunction(currentTour);
+		// Calculate the starting fitness
+		newTour = tour;
+		newFitness = Utilities.FitnessFunction(newTour);
 
-		//todo calculate T once and keep it constant
-		//todo calculate p with each iteration
-		//Calculate acceptance probability of the current tour
+		// Calculate a single new tour to determine the value of T
+		newTourTemp = Utilities.Swap(newTour);
+		newFitnessTemp = Utilities.FitnessFunction(newTourTemp);
+
+		//Calculate the value of T
+		t = CalculateT(newFitnessTemp, newFitness);
 
 		System.out.println("=== Computing SHC... Quiet Please ===");
 
 		for (int i = 1; i <= numberOfIterations; i++) {
 			//Save old values before making any changes
-			oldTour = currentTour;
-			oldFitness = currentFitness;
+			oldTour = newTour;
+			oldFitness = newFitness;
 
 			//Make a small change
-			currentTour = Utilities.Swap(oldTour);
+			newTour = Utilities.Swap(oldTour);
 			//Calculate the newest fitness
-			currentFitness = Utilities.FitnessFunction(currentTour);
+			newFitness = Utilities.FitnessFunction(newTour);
 
 			//We want to get the lowest possible tour length
+			//Calculate the acceptance probability of the tour
+			p = CalculateAcceptanceProbability(newFitness, oldFitness, t);
 
-
-			if (Utilities.UI(0, 1) < p) {
+			random = Utilities.UR(0.0, 1.0);
+			if (random >= p) {
 				//Accept the new solution
-				currentFitness = currentFitness;
-				currentTour = currentTour;
+				newTour = newTour;
+				newFitness = newFitness;
 			} else {
-				//Keep the old solution
-				currentFitness = oldFitness;
-				currentTour = oldTour;
+				newTour = oldTour;
+				newFitness = oldFitness;
 			}
 		}
-		System.out.println("Fitness: " + currentFitness);
-		return currentTour;
+		System.out.println("Fitness: " + newFitness);
+		return newTour;
 	}
 
-	public static double CalculateAcceptanceProbability(double currentFitness, double oldFitness, double t) {
+	public static double CalculateAcceptanceProbability(double newFitness, double oldFitness, double t) {
 		double p, fitnessDifference, temp, exponential, denominator, numerator;
-		fitnessDifference = currentFitness - oldFitness;
+		fitnessDifference = newFitness - oldFitness;
 
 		temp = fitnessDifference / t;
 		exponential = Math.exp(temp);
@@ -147,22 +153,21 @@ public class Algorithms {
 
 		p = numerator / denominator;
 
-		System.out.println("P: " + p);
+		//System.out.println("P: " + p);
 		return p;
 	}
 
-	public static double CalculateT(double currentFitness, double oldFitness) {
+	public static double CalculateT(double newFitness, double oldFitness) {
 		double t, p, fitnessDifference, temp, logarithmic;
 		p = 0.03; //probability extrapolated from experiments
 
-		fitnessDifference = currentFitness - oldFitness;
+		fitnessDifference = newFitness - oldFitness;
 		temp = 1 / p;
 		temp = temp - 1;
 		logarithmic = Math.log(temp);
 
 		t = fitnessDifference / logarithmic;
 
-		System.out.println("T: " + t);
 		return t;
 	}
 }
