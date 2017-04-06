@@ -95,24 +95,20 @@ public class Algorithms {
 		newTour = tour;
 		newFitness = Utilities.FitnessFunction(newTour);
 
-		// Calculate a single new tour to determine the value of T
-		newTourTemp = Utilities.Swap(newTour);
-		newFitnessTemp = Utilities.FitnessFunction(newTourTemp);
-
 		for (int i = 1; i <= numberOfIterations; i++) {
 			//Save old values before making any changes
 			oldTour = newTour;
 			oldFitness = newFitness;
 
-			//Make a small change
+			//Make a small change and calculate the newest fitness
 			newTour = Utilities.Swap(oldTour);
-			//Calculate the newest fitness
 			newFitness = Utilities.FitnessFunction(newTour);
 
 			//If the current solution is worse than the previous one
 			if (newFitness > oldFitness) {
 				// Determine if the old solution should be accepted
 				p = CalculateAcceptanceProbability(newFitness, oldFitness, t);
+
 				if (p >= Utilities.UR(0.0, 1.0)) {
 					// If the probability of accepting worse solution is high ... accept it
 					newFitness = newFitness;
@@ -162,16 +158,31 @@ public class Algorithms {
 		return p;
 	}
 
-	public static double CalculateT(double newFitness, double oldFitness) {
-		double t, p, fitnessDifference, temp, logarithmic;
-		p = 0.03; //probability extrapolated from experiments
+	public static double CalculateT(double[][] distanceMatrix, double newFitness, double oldFitness) {
+		int yLength = distanceMatrix[0].length;
+		int xLength = distanceMatrix[1].length;
+		double k = 0.0;
+		double totalDistance = 0.0;
+		double t;
 
-		fitnessDifference = newFitness - oldFitness;
-		temp = 1 / p;
-		temp = temp - 1;
-		logarithmic = Math.log(temp);
+		for (int y = 0; y < yLength; y++) {
+			for (int x = 0; x < xLength; x++) {
+				totalDistance = totalDistance + distanceMatrix[y][x];
+			}
+		}
+		//TODO iterate K
 
-		t = fitnessDifference / logarithmic;
+		t = totalDistance / k;
+
+//		double t, p, fitnessDifference, temp, logarithmic;
+//		p = 0.03; //probability extrapolated from experiments
+//
+//		fitnessDifference = newFitness - oldFitness;
+//		temp = 1 / p;
+//		temp = temp - 1;
+//		logarithmic = Math.log(temp);
+//
+//		t = fitnessDifference / logarithmic;
 
 		return t;
 	}

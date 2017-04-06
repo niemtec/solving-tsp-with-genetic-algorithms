@@ -82,13 +82,13 @@ public class Utilities {
 	 * @param array input array to be printed
 	 */
 	public static void PrintArray(double[][] array) {
-		int yLength = array[0].length;
-		int xLength = array[1].length;
+		int xLength = array[0].length;
+		int yLength = array[1].length;
 		int y, x;
 
 		try {
-			for (y = 0; y < yLength; y++) {
-				for (x = 0; x < xLength; x++) {
+			for (x = 0; x < xLength; y++) {
+				for (y = 0; y < yLength; y++) {
 					System.out.print(array[y][x] + " ");
 				}
 				System.out.println();
