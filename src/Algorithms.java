@@ -110,6 +110,7 @@ public class Algorithms {
 		newFitnessTemp = Utilities.FitnessFunction(newTourTemp);
 
 		//Calculate the value of T
+		//TODO pick a better value for T
 		t = CalculateT(newFitnessTemp, newFitness);
 
 		System.out.println("=== Computing SHC... Quiet Please ===");
@@ -171,7 +172,6 @@ public class Algorithms {
 
 		p = numerator / denominator;
 
-		//System.out.println("P: " + p);
 		return p;
 	}
 
