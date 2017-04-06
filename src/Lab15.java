@@ -24,7 +24,7 @@ public class Lab15 {
 		int numberOfIterations = 10000;
 		List<Integer> tour;
 
-		Utilities.LoadDataFile(150);
+		Utilities.LoadDataFile(200);
 		//Generate the first base tour
 		tour = Utilities.PopulateCities(matrixSize);
 
@@ -35,6 +35,4 @@ public class Lab15 {
 		Algorithms.SHC(tour, numberOfIterations);
 		Algorithms.RMHC(tour, numberOfIterations);
 	}
-
-
 }

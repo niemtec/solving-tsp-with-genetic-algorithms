@@ -124,19 +124,36 @@ public class Algorithms {
 			//Calculate the newest fitness
 			newFitness = Utilities.FitnessFunction(newTour);
 
-			//We want to get the lowest possible tour length
-			//Calculate the acceptance probability of the tour
-			p = CalculateAcceptanceProbability(newFitness, oldFitness, t);
-
-			random = Utilities.UR(0.0, 1.0);
-			//FIXME This doesn't work properly
-			if (random >= p) {
-				//Accept the new solution
-				newTour = newTour;
-				newFitness = newFitness;
+			//If the current solution is worse than the previous one
+			if (newFitness > oldFitness) {
+				// Determine if the old solution should be accepted
+				p = CalculateAcceptanceProbability(newFitness, oldFitness, t);
+				if (p >= Utilities.UR(0.0, 1.0)) {
+					// If the probability of accepting worse solution is high ... accept it
+					newFitness = newFitness;
+					newTour = newTour;
+				} else {
+					// Do not accept the worse solution
+					newFitness = oldFitness;
+					newTour = oldTour;
+				}
+				// If fitness is the same
+			} else if (newFitness == oldFitness) {
+				// 50-50 chance of choosing old solution
+				int r = Utilities.UI(0, 1);
+				if (r == 0) {
+					// Choose new solution
+					newFitness = newFitness;
+					newTour = newTour;
+				} else {
+					// Choose old solution
+					newFitness = oldFitness;
+					newTour = oldTour;
+				}
 			} else {
-				newTour = oldTour;
-				newFitness = oldFitness;
+				// Accept the new solution
+				newFitness = newFitness;
+				newTour = newTour;
 			}
 		}
 		System.out.println("Fitness: " + newFitness);
