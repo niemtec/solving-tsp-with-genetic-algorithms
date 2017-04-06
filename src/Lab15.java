@@ -7,6 +7,8 @@
  * Student ID: 1500408
  */
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -22,6 +24,7 @@ public class Lab15 {
 	public static void main(String args[]) {
 		int numberOfRepeats;
 		int numberOfIterations = 10000;
+		int temperature;
 		List<Integer> tour;
 
 		Utilities.LoadDataFile(200);
@@ -31,8 +34,31 @@ public class Lab15 {
 		//Set a random point in the search space
 		tour = Utilities.PermuteTour(tour);
 		System.out.println("Tour: " + tour);
+
+		System.out.println("=== Computing RRHC... Quiet Please ===");
 		Algorithms.RRHC(tour, numberOfIterations);
-		Algorithms.SHC(tour, numberOfIterations);
+
+		System.out.println("=== Calculating Temperature for SHC ===");
+		temperature = CalculateStochasticTemperature(distanceArray, numberOfIterations, tour);
+		System.out.println("Best Temperature: " + temperature);
+
+		System.out.println("=== Computing SHC... Quiet Please ===");
+		Algorithms.SHC(tour, numberOfIterations, temperature, true);
+
+		System.out.println("=== Computing RMHC... Quiet Please ===");
 		Algorithms.RMHC(tour, numberOfIterations);
+	}
+
+	public static int CalculateStochasticTemperature(double[][] distanceArray, int numberOfIterations, List<Integer> tour) {
+		int temperature;
+		ArrayList<Double> fitnessValues = new ArrayList<>();
+		for (int i = 0; i < 10000; i++) {
+			double currentFitness = Algorithms.SHC(tour, numberOfIterations, i, false);
+			fitnessValues.add(currentFitness);
+		}
+
+		double minimumFitness = Collections.min(fitnessValues);
+		temperature = fitnessValues.indexOf(minimumFitness);
+		return temperature;
 	}
 }

@@ -1,4 +1,3 @@
-import javax.rmi.CORBA.Util;
 import java.util.List;
 
 public class Algorithms {
@@ -16,7 +15,6 @@ public class Algorithms {
 		newTour = tour;
 		newFitness = Utilities.FitnessFunction(newTour);
 
-		System.out.println("=== Computing RMHC... Quiet Please ===");
 
 		for (int i = 1; i <= numberOfIterations; i++) {
 			//Save old values before making any changes
@@ -59,7 +57,6 @@ public class Algorithms {
 		bestTour = newTour;
 		bestFitness = Utilities.FitnessFunction(newTour);
 
-		System.out.println("=== Computing RRHC... Quiet Please ===");
 
 		for (int r = 1; r <= numberOfRepeats; r++) {
 			for (int i = 1; i <= numberOfIterations; i++) {
@@ -88,17 +85,10 @@ public class Algorithms {
 		return bestTour;
 	}
 
-	/**
-	 * Stochastic Hill Climber
-	 *
-	 * @param tour               starting tour - will be modified using small change
-	 * @param numberOfIterations the total number of iterations to run the algorithm for
-	 * @return returns the most optimal tour after a given number of iterations
-	 */
-	public static List<Integer> SHC(List<Integer> tour, int numberOfIterations) {
+
+	public static double SHC(List<Integer> tour, int numberOfIterations, double t, boolean reporting) {
 		List<Integer> oldTour, newTour, newTourTemp;
 		double oldFitness, newFitness, newFitnessTemp, random;
-		double t; // stores the current temperature parameter for SHC
 		double p; // solution acceptance probability
 
 		// Calculate the starting fitness
@@ -108,12 +98,6 @@ public class Algorithms {
 		// Calculate a single new tour to determine the value of T
 		newTourTemp = Utilities.Swap(newTour);
 		newFitnessTemp = Utilities.FitnessFunction(newTourTemp);
-
-		//Calculate the value of T
-		//TODO pick a better value for T
-		t = CalculateT(newFitnessTemp, newFitness);
-
-		System.out.println("=== Computing SHC... Quiet Please ===");
 
 		for (int i = 1; i <= numberOfIterations; i++) {
 			//Save old values before making any changes
@@ -157,8 +141,11 @@ public class Algorithms {
 				newTour = newTour;
 			}
 		}
-		System.out.println("Fitness: " + newFitness);
-		return newTour;
+
+		if (reporting == true) {
+			System.out.println("Fitness: " + newFitness);
+		}
+		return newFitness;
 	}
 
 	public static double CalculateAcceptanceProbability(double newFitness, double oldFitness, double t) {
