@@ -35,4 +35,19 @@ public class Lab15 {
 		Algorithms.SHC(tour, numberOfIterations);
 		Algorithms.RMHC(tour, numberOfIterations);
 	}
+
+	public static double CalculateT(double currentFitness, double oldFitness) {
+		double t, p, fitnessDifference, temp;
+
+		p = 0.03; //probability extrapolated from experiments
+		fitnessDifference = currentFitness - oldFitness;
+
+		temp = 1 / p;
+		temp = temp - 1;
+		temp = Math.log(temp);
+
+		t = fitnessDifference / temp;
+
+		return t;
+	}
 }
