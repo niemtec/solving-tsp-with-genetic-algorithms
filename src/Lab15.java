@@ -48,4 +48,42 @@ public class Lab15 {
 		Algorithms.RMHC(tour, numberOfIterations);
 	}
 
+	private static void SA(List<Integer> tour, int numberOfIterations, double[] temperatureArray, double coolingRate) {
+		List<Integer> oldTour, newTour;
+		double oldFitness, newFitness;
+
+		newTour = tour;
+		newFitness = Utilities.FitnessFunction(newTour);
+
+		for (int i = 1; i <= numberOfIterations; i++) {
+			//Save old values before making any changes
+			oldTour = newTour;
+			oldFitness = newFitness;
+
+			//Make a small change
+			newTour = Utilities.Swap(oldTour);
+			//Calculate newest fitness
+			newFitness = Utilities.FitnessFunction(newTour);
+
+			if (newFitness > oldFitness) {
+				//Calculate the probability of accepting new solution
+				double temperature = temperatureArray[i];
+				double p = Efficiency.PR(newFitness, oldFitness, temperature);
+
+				if (p < Utilities.UR(0, 1)) {
+					//Reject the change
+					newFitness = oldFitness;
+					newTour = oldTour;
+				} else {
+					//Accept the change
+					newFitness = newFitness;
+					newTour = newTour;
+				}
+			} else {
+				oldFitness = newFitness;
+				oldTour = newTour;
+			}
+			temperatureArray[i + 1] = coolingRate * temperatureArray[i];
+		}
+	}
 }

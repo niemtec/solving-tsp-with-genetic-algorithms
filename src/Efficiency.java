@@ -84,4 +84,10 @@ public class Efficiency {
 
 		return efficiency;
 	}
+
+	static double PR(double newFitness, double oldFitness, double temperature) {
+		double changeInFitness = Math.abs(newFitness - oldFitness);
+		double prScore = Math.exp((-1 * changeInFitness) / temperature);
+		return prScore;
+	}
 }
