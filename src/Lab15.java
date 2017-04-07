@@ -22,7 +22,7 @@ public class Lab15 {
 	public static void main(String args[]) {
 		int numberOfRepeats;
 		int numberOfIterations = 10000;
-		int temperature;
+		double temperature;
 		List<Integer> tour;
 
 		Utilities.LoadDataFile(48);
@@ -36,8 +36,9 @@ public class Lab15 {
 		System.out.println("=== Computing RRHC... Quiet Please ===");
 		Algorithms.RRHC(tour, numberOfIterations);
 
+		//Determine heuristically optimal temperature setting for the SHC
 		System.out.println("=== Calculating Temperature for SHC ===");
-		temperature = Utilities.CalculateStochasticTemperature(distanceArray, numberOfIterations, tour);
+		temperature = Utilities.CalculateStochasticTemperature(distanceArray, tour);
 		System.out.println("Best Temperature: " + temperature);
 
 		System.out.println("=== Computing SHC... Quiet Please ===");

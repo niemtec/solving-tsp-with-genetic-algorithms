@@ -170,35 +170,52 @@ public class Utilities {
 		return output;
 	}
 
+	/**
+	 * Rings a system bell, for when you have to run long calculations
+	 */
 	public static void RingSystemBell() {
 		java.awt.Toolkit.getDefaultToolkit().beep();
 	}
 
-	public static int CalculateStochasticTemperature(double[][] distanceMatrix, int numberOfIterations, List<Integer> tour) {
-		int temperature = 0;
+	/**
+	 * Calculates the optimal temperature value for the SHC
+	 *
+	 * @param distanceMatrix matrix of distances between individual nodes
+	 * @param tour           starting tour to calculate for
+	 * @return optimal temperature for the given dataset
+	 */
+	public static double CalculateStochasticTemperature(double[][] distanceMatrix, List<Integer> tour) {
+		double temperature;
+		//Get the total distance in the current dataset for later calculations
 		double totalDistance = GetTotalDistance(distanceMatrix);
-		double t, currentFitness, bestK = 0;
-
+		// Hashmap storing the k value and the fitness reading used to determine the temperature
 		Map<Integer, Double> map = new HashMap<>();
 
+		//Iterate through possible temperature scores
+		//Those usually start in the 1k region, but start small nonetheless
 		for (int k = 10; k < 100000; k++) {
-			t = totalDistance / k;
-			double fitnessScore = Algorithms.SHC(tour, 1000, t, false);
-
+			//Calculation used to determine the value of temperature for a temporary SHC test
+			double t = totalDistance / k;
+			//Testing the effectiveness of the current temperature based on the k reading
+			double fitnessScore = Algorithms.SHC(tour, 500, t, false);
 			//Store the value in the map
 			map.put(k, fitnessScore);
 		}
 
-		double smallestValue = map.values().stream().min(Double::compare).get();
+		//Find the smallest fitness in the map and return its key
 		int k = GetSmallestKey(map);
-		System.out.println("Smallest Value: " + smallestValue);
-		System.out.println("Smallest Key: " + k);
 
-		temperature = (int) (totalDistance / k);
+		//Use the equation T = F(D) / K to calculate the temperature
+		temperature = totalDistance / k;
 
 		return temperature;
 	}
 
+	/**
+	 * Calculates the total distance within the distance matrix
+	 * @param distanceMatrix matrix of distances to calculate the total distance for
+	 * @return total distance
+	 */
 	private static double GetTotalDistance(double[][] distanceMatrix) {
 		int yLength = distanceMatrix[0].length;
 		int xLength = distanceMatrix[1].length;
@@ -213,6 +230,11 @@ public class Utilities {
 		return totalDistance;
 	}
 
+	/**
+	 * Locates the smallest key in a hashmap based on the values
+	 * @param map hasmap to be searched for the smallest key-value pair
+	 * @return int key of the smallest correlated value
+	 */
 	private static int GetSmallestKey(Map<Integer, Double> map) {
 		int minKey = Integer.MAX_VALUE;
 		double minValue = Integer.MAX_VALUE;
@@ -224,25 +246,6 @@ public class Utilities {
 				minKey = key;
 			}
 		}
-
 		return minKey;
-	}
-
-	private static double FindLowestValue(double[][] valueArray) {
-		double key, lowestKey = Integer.MAX_VALUE;
-		double value, lowestValue = Integer.MAX_VALUE;
-
-		//Find the lowest value in the array
-		for (int i = 2; i < valueArray.length; i++) {
-			key = valueArray[i][0];
-			value = valueArray[i][1];
-
-			if (value < lowestValue) {
-				lowestKey = key;
-				lowestValue = value;
-			}
-		}
-
-		return lowestKey;
 	}
 }
