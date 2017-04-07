@@ -22,7 +22,6 @@ public class MST {
 		return (new Edge(-1, -1, 0.0));
 	}
 
-	@SuppressWarnings("unchecked")
 	//d is a distance matrix, high value edges are more costly
 	//Assume that d is symmetric and square
 	public static double[][] PrimsMST(double[][] d) {

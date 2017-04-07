@@ -28,6 +28,12 @@ public class Utilities {
 		return ((b - a) * rand.nextDouble() + a);
 	}
 
+	/**
+	 * Used to generate a list from 0 to n for given cities, as a starting point for the tour permutation
+	 *
+	 * @param numberOfCities number of cities to 'generate'
+	 * @return array list of cities (integers) from 0 to n
+	 */
 	public static ArrayList<Integer> PopulateCities(int numberOfCities) {
 		ArrayList<Integer> tour = new ArrayList<>();
 		//Populate startingPermutation with city numbers
@@ -37,6 +43,11 @@ public class Utilities {
 		return tour;
 	}
 
+	/**
+	 * Creates a permutation of a given tour
+	 * @param tour tour to be permuted
+	 * @return permuted tour
+	 */
 	public static List<Integer> PermuteTour(List<Integer> tour) {
 		List<Integer> resultantPermutation = new ArrayList<>();
 		System.out.println("Initial List: " + tour);
