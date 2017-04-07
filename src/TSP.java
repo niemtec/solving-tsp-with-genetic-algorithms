@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 //Some useful code for the CS2004 (2016-2017) Travelling Salesman Worksheet
 public class TSP {
+
 	//Print a 2D double array to the console Window
 	static public void PrintArray(double x[][]) {
 		for (int i = 0; i < x.length; ++i) {

@@ -47,4 +47,5 @@ public class Lab15 {
 		System.out.println("=== Computing RMHC... Quiet Please ===");
 		Algorithms.RMHC(tour, numberOfIterations);
 	}
+
 }
