@@ -34,7 +34,7 @@ public class Lab15 {
 		System.out.println("Tour: " + tour);
 
 		System.out.println("=== Computing RRHC... Quiet Please ===");
-		Algorithms.RRHC(tour, numberOfIterations);
+		Algorithms.RRHC(tour, numberOfIterations / 10);
 
 		//Determine heuristically optimal temperature setting for the SHC
 		System.out.println("=== Calculating Temperature for SHC ===");

@@ -203,18 +203,22 @@ public class Utilities {
 		Map<Integer, Double> map = new HashMap<>();
 
 		//Iterate through possible temperature scores
-		//Those usually start in the 1k region, but start small nonetheless
-		for (int k = 10; k < 100000; k++) {
+		//Those usually start in the 1k region
+		for (int k = 1000; k < 100000; k++) {
 			//Calculation used to determine the value of temperature for a temporary SHC test
 			double t = totalDistance / k;
 			//Testing the effectiveness of the current temperature based on the k reading
-			double fitnessScore = Algorithms.SHC(tour, 500, t, false);
+			double fitnessScore = Algorithms.SHC(tour, 1000, t, false);
 			//Store the value in the map
 			map.put(k, fitnessScore);
 		}
 
 		//Find the smallest fitness in the map and return its key
 		int k = GetSmallestKey(map);
+
+		//Printouts used for checking the output of K and its temperature
+//		System.out.println("Smallest Value: " + map.values().stream().min(Double::compare).get());
+//		System.out.println("Best K: " + k);
 
 		//Use the equation T = F(D) / K to calculate the temperature
 		temperature = totalDistance / k;

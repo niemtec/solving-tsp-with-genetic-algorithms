@@ -45,7 +45,7 @@ public class Algorithms {
 	 * @return returns the most optimal tour after a given number of iterations
 	 */
 	public static List<Integer> RRHC(List<Integer> tour, int numberOfIterations) {
-		int numberOfRepeats = 1000;
+		int numberOfRepeats = numberOfIterations / 10;
 		List<Integer> oldTour, newTour, bestTour;
 		double oldFitness, newFitness, bestFitness;
 
@@ -56,7 +56,6 @@ public class Algorithms {
 		//Temporarily assume the first tour is the best
 		bestTour = newTour;
 		bestFitness = Utilities.FitnessFunction(newTour);
-
 
 		for (int r = 1; r <= numberOfRepeats; r++) {
 			for (int i = 1; i <= numberOfIterations; i++) {
