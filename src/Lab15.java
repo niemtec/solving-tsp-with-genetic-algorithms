@@ -20,9 +20,9 @@ public class Lab15 {
 	public static double[][] distanceArray;
 
 	public static void main(String args[]) {
-		int numberOfRepeats;
-		int numberOfIterations = 10000;
-		double temperature, coolingRate;
+		int numberOfRepeats = 5;
+		int numberOfIterations = 100000;
+		double temperature, coolingRate, temperatureAnnealing;
 		List<Integer> tour;
 
 		Utilities.LoadDataFile(48);
@@ -33,41 +33,48 @@ public class Lab15 {
 		tour = Utilities.PermuteTour(tour);
 		System.out.println("Tour: " + tour);
 
+		System.out.println("=== Calculating Temperature for SA ===");
+		temperatureAnnealing = Utilities.CalculateAnnealingTemperature(distanceArray, tour);
+		System.out.println("Best Temperature: " + temperatureAnnealing);
+
 		//Determine heuristically optimal temperature setting for the SHC
-		System.out.println("=== Calculating Temperature ===");
+		System.out.println("=== Calculating Temperature for SHC ===");
 		temperature = Utilities.CalculateStochasticTemperature(distanceArray, tour);
 		System.out.println("Best Temperature: " + temperature);
 
 		System.out.println("=== Calculating Cooling Rate ===");
-		coolingRate = CalculateCoolingRate(temperature, numberOfIterations);
+		coolingRate = CalculateCoolingRate(temperatureAnnealing, numberOfIterations);
 		System.out.println("Cooling Rate: " + coolingRate);
 
-		System.out.println("=== Computing SA... Quiet Please ===");
-		SA(tour, numberOfIterations, temperature, coolingRate);
+		for (int i = 0; i < numberOfRepeats; i++) {
+			System.out.println();
+			System.out.println("=== Computing SA... Quiet Please ===");
+			SA(tour, numberOfIterations, temperatureAnnealing, coolingRate, true);
 
-		System.out.println("=== Computing RRHC... Quiet Please ===");
-		Algorithms.RRHC(tour, numberOfIterations / 10);
+			System.out.println("=== Computing RRHC... Quiet Please ===");
+			Algorithms.RRHC(tour, numberOfIterations / 10);
 
+			System.out.println("=== Computing SHC... Quiet Please ===");
+			Algorithms.SHC(tour, numberOfIterations, temperature, true);
 
-		System.out.println("=== Computing SHC... Quiet Please ===");
-		Algorithms.SHC(tour, numberOfIterations, temperature, true);
-
-		System.out.println("=== Computing RMHC... Quiet Please ===");
-		Algorithms.RMHC(tour, numberOfIterations);
+			System.out.println("=== Computing RMHC... Quiet Please ===");
+			Algorithms.RMHC(tour, numberOfIterations);
+		}
 	}
 
-	private static void SA(List<Integer> tour, int numberOfIterations, double startingTemperature, double coolingRate) {
-		List<Integer> oldTour, newTour, newTourTemp;
-		double oldFitness, newFitness, newFitnessTemp, random;
+	static double SA(List<Integer> tour, int numberOfIterations, double startingTemperature, double coolingRate, boolean printFitness) {
+		List<Integer> oldTour, newTour;
+		List<Double> temperature = new ArrayList<>();
+		double oldFitness, newFitness, temp;
 		double p; // solution acceptance probability
 
-		double temperature = startingTemperature;
+		temperature.add(0, startingTemperature);
 
 		// Calculate the starting fitness
 		newTour = tour;
 		newFitness = Utilities.FitnessFunction(newTour);
 
-		for (int i = 1; i <= numberOfIterations; i++) {
+		for (int i = 0; i < numberOfIterations; i++) {
 			//Save old values before making any changes
 			oldTour = newTour;
 			oldFitness = newFitness;
@@ -77,36 +84,47 @@ public class Lab15 {
 			newFitness = Utilities.FitnessFunction(newTour);
 
 			if (newFitness > oldFitness) {
-				p = Efficiency.PR(newFitness, oldFitness, temperature);
+				//p = Efficiency.PR(newFitness, oldFitness, temperature);
+				p = Efficiency.PR(newFitness, oldFitness, temperature.get(i));
 
+				//Decide whether to reject the change
 				if (p < Utilities.UR(0.0, 1.0)) {
 					//Reject Change, keep x and f
 					newFitness = oldFitness;
 					newTour = oldTour;
 				} else {
-					//Accept the change
+					//Accept the change, use x' and f'
 					newFitness = newFitness;
 					newTour = newTour;
 				}
+
 			} else {
+				//Accept change, use x' and f'
 				newFitness = newFitness;
 				newTour = newTour;
 			}
-			temperature = temperature * coolingRate;
+			double currentTemperature = temperature.get(i);
+			temp = coolingRate * currentTemperature;
+			temperature.add(i + 1, temp);
 		}
-		System.out.println("Fitness: " + newFitness);
+		if (printFitness == true) {
+			System.out.println("Fitness: " + newFitness);
+		}
+		return newFitness;
 	}
 
+
 	private static double CalculateCoolingRate(double startingTemperature, int numberOfIterations) {
-		double tIter, tValue, coolingRate;
+		double tIter, tValue, coolingRate, powerValue;
 		int iter;
 
 		tIter = 0.001;
 		iter = numberOfIterations;
 
 		tValue = tIter / startingTemperature;
+		powerValue = 1.0 / iter;
 
-		coolingRate = Math.pow(tValue, 1 / iter);
+		coolingRate = Math.pow(tValue, powerValue);
 
 		return coolingRate;
 	}
