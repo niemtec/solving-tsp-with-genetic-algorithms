@@ -54,15 +54,16 @@ public class Lab15 {
 
 	private static void SA(List<Integer> tour, int numberOfIterations, double startingTemperature) {
 		List<Integer> oldTour, newTour;
-		double oldFitness, newFitness;
-		ArrayList<Double> temperature = new ArrayList<>();
+		double oldFitness, newFitness, temperature, coolingRate, p;
 
-		//TODO Determine the starting temperature
+		// Set initial starting temperature
+		temperature = startingTemperature;
 
 		newTour = tour;
 		newFitness = Utilities.FitnessFunction(newTour);
 
-		for (int i = 0; i < numberOfIterations - 1; i++) {
+		// Loop until system has cooled
+		while (temperature > 1) {
 			//Save old values before making any changes
 			oldTour = newTour;
 			oldFitness = newFitness;
@@ -72,23 +73,15 @@ public class Lab15 {
 			//Calculate newest fitness
 			newFitness = Utilities.FitnessFunction(newTour);
 
-			double changeInFitness = Math.abs(newFitness - oldFitness);
-			double coolingRate = CalculateCoolingRate(0.001, numberOfIterations);
-			temperature.add(0, changeInFitness);
-
-
-			double temperatureValue = temperature.get(i);
-
+			// Decide if to accept the neighbour
 			if (newFitness > oldFitness) {
-				//Calculate the probability of accepting new solution
-				double p = Efficiency.PR(newFitness, oldFitness, temperatureValue);
-
-				if (p < Utilities.UR(0, 1)) {
-					//Reject the change
+				p = Efficiency.PR(newFitness, oldFitness, temperature);
+				if (p < Utilities.UR(0.0, 1.0)) {
+					//Reject Change
 					newFitness = oldFitness;
 					newTour = oldTour;
 				} else {
-					//Accept the change
+					//Accept Change
 					newFitness = newFitness;
 					newTour = newTour;
 				}
@@ -96,17 +89,23 @@ public class Lab15 {
 				oldFitness = newFitness;
 				oldTour = newTour;
 			}
-			temperature.add(i + 1, coolingRate * (temperature.get(i)));
+			coolingRate = CalculateCoolingRate(temperature, numberOfIterations);
+			temperature = temperature * (coolingRate - 1);
 		}
 		System.out.println("Fitness: " + newFitness);
-
 	}
 
 	private static double CalculateCoolingRate(double startingTemperature, int numberOfIterations) {
-		//TODO: Completely wrong: fix.
-		double squareRoot = 0.001 / startingTemperature;
-		double powerValue = 1 / numberOfIterations;
-		double coolingRate = Math.pow(squareRoot, powerValue);
+
+		double tIter, t0, tValue, coolingRate;
+		int iter;
+
+		tIter = 0.001;
+		iter = numberOfIterations;
+
+		tValue = tIter / startingTemperature;
+
+		coolingRate = Math.pow(tValue, 1.0 / iter);
 
 		return coolingRate;
 	}
