@@ -169,19 +169,8 @@ public class Algorithms {
 				totalDistance = totalDistance + distanceMatrix[y][x];
 			}
 		}
-		//TODO iterate K
 
 		t = totalDistance / k;
-
-//		double t, p, fitnessDifference, temp, logarithmic;
-//		p = 0.03; //probability extrapolated from experiments
-//
-//		fitnessDifference = newFitness - oldFitness;
-//		temp = 1 / p;
-//		temp = temp - 1;
-//		logarithmic = Math.log(temp);
-//
-//		t = fitnessDifference / logarithmic;
 
 		return t;
 	}

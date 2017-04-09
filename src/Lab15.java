@@ -22,7 +22,7 @@ public class Lab15 {
 	public static void main(String args[]) {
 		int numberOfRepeats;
 		int numberOfIterations = 10000;
-		double temperature;
+		double temperature, coolingRate;
 		List<Integer> tour;
 
 		Utilities.LoadDataFile(48);
@@ -38,8 +38,12 @@ public class Lab15 {
 		temperature = Utilities.CalculateStochasticTemperature(distanceArray, tour);
 		System.out.println("Best Temperature: " + temperature);
 
+		System.out.println("=== Calculating Cooling Rate ===");
+		coolingRate = CalculateCoolingRate(temperature, numberOfIterations);
+		System.out.println("Cooling Rate: " + coolingRate);
+
 		System.out.println("=== Computing SA... Quiet Please ===");
-		SA(tour, numberOfIterations, temperature);
+		SA(tour, numberOfIterations, temperature, coolingRate);
 
 		System.out.println("=== Computing RRHC... Quiet Please ===");
 		Algorithms.RRHC(tour, numberOfIterations / 10);
@@ -52,52 +56,49 @@ public class Lab15 {
 		Algorithms.RMHC(tour, numberOfIterations);
 	}
 
-	private static void SA(List<Integer> tour, int numberOfIterations, double startingTemperature) {
-		List<Integer> oldTour, newTour;
-		double oldFitness, newFitness, temperature, coolingRate, p;
+	private static void SA(List<Integer> tour, int numberOfIterations, double startingTemperature, double coolingRate) {
+		List<Integer> oldTour, newTour, newTourTemp;
+		double oldFitness, newFitness, newFitnessTemp, random;
+		double p; // solution acceptance probability
 
-		// Set initial starting temperature
-		temperature = startingTemperature;
+		double temperature = startingTemperature;
 
+		// Calculate the starting fitness
 		newTour = tour;
 		newFitness = Utilities.FitnessFunction(newTour);
 
-		// Loop until system has cooled
-		while (temperature > 1) {
+		for (int i = 1; i <= numberOfIterations; i++) {
 			//Save old values before making any changes
 			oldTour = newTour;
 			oldFitness = newFitness;
 
-			//Make a small change
+			//Make a small change and calculate the newest fitness
 			newTour = Utilities.Swap(oldTour);
-			//Calculate newest fitness
 			newFitness = Utilities.FitnessFunction(newTour);
 
-			// Decide if to accept the neighbour
 			if (newFitness > oldFitness) {
 				p = Efficiency.PR(newFitness, oldFitness, temperature);
+
 				if (p < Utilities.UR(0.0, 1.0)) {
-					//Reject Change
+					//Reject Change, keep x and f
 					newFitness = oldFitness;
 					newTour = oldTour;
 				} else {
-					//Accept Change
+					//Accept the change
 					newFitness = newFitness;
 					newTour = newTour;
 				}
 			} else {
-				oldFitness = newFitness;
-				oldTour = newTour;
+				newFitness = newFitness;
+				newTour = newTour;
 			}
-			coolingRate = CalculateCoolingRate(temperature, numberOfIterations);
-			temperature = temperature * (coolingRate - 1);
+			temperature = temperature * coolingRate;
 		}
 		System.out.println("Fitness: " + newFitness);
 	}
 
 	private static double CalculateCoolingRate(double startingTemperature, int numberOfIterations) {
-
-		double tIter, t0, tValue, coolingRate;
+		double tIter, tValue, coolingRate;
 		int iter;
 
 		tIter = 0.001;
@@ -105,7 +106,7 @@ public class Lab15 {
 
 		tValue = tIter / startingTemperature;
 
-		coolingRate = Math.pow(tValue, 1.0 / iter);
+		coolingRate = Math.pow(tValue, 1 / iter);
 
 		return coolingRate;
 	}
