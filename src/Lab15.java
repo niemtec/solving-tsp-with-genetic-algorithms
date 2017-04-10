@@ -18,14 +18,16 @@ public class Lab15 {
 	static double[][] matrixDimensionCountArray;
 	static int matrixSize;
 	public static double[][] distanceArray;
+	public static int numberOfCities = 48;
 
 	public static void main(String args[]) {
 		int numberOfRepeats = 5;
 		int numberOfIterations = 5000;
 		double temperature, coolingRate, temperatureAnnealing;
-		List<Integer> tour;
+		int[] tour = new int[numberOfCities];
 
-		Utilities.LoadDataFile(48);
+
+		Utilities.LoadDataFile(numberOfCities);
 		//Generate the first base tour
 		tour = Utilities.PopulateCities(matrixSize);
 
@@ -59,11 +61,14 @@ public class Lab15 {
 	}
 
 	static double SA(List<Integer> tour, int numberOfIterations, double startingTemperature, double coolingRate, boolean printFitness) {
-		List<Integer> oldTour, newTour, bestTour;
+		//List<Integer> oldTour, newTour, bestTour;
 		List<Double> temperature = new ArrayList<>();
 		double oldFitness, newFitness, bestFitness, temp;
 		double p; // solution acceptance probability
-		//startingTemperature = 100000;
+
+		int[] oldTour = new int[numberOfCities];
+		int[] newTour = new int[numberOfCities];
+		int[] bestTour = new int[numberOfCities];
 
 		temperature.add(0, startingTemperature);
 

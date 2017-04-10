@@ -34,11 +34,11 @@ public class Utilities {
 	 * @param numberOfCities number of cities to 'generate'
 	 * @return array list of cities (integers) from 0 to n
 	 */
-	public static ArrayList<Integer> PopulateCities(int numberOfCities) {
-		ArrayList<Integer> tour = new ArrayList<>();
+	public static int[] PopulateCities(int numberOfCities) {
+		int[] tour = new int[numberOfCities];
 		//Populate startingPermutation with city numbers
 		for (int i = 0; i < numberOfCities; i++) {
-			tour.add(i);
+			tour[i] = i;
 		}
 		return tour;
 	}
@@ -48,10 +48,21 @@ public class Utilities {
 	 * @param tour tour to be permuted
 	 * @return permuted tour
 	 */
-	public static List<Integer> PermuteTour(List<Integer> tour) {
-		List<Integer> resultantPermutation = new ArrayList<>();
+	public static int[] PermuteTour(int[] tour) {
+		int[] resultantPermutation = new int[Lab15.numberOfCities];
 		System.out.println("Initial List: " + tour);
-		Collections.shuffle(tour);
+
+		//Shuffle the tour
+		int i = 0, j = 0;
+		while (i == j) {
+			i = Utilities.UI(0, Lab15.numberOfCities);
+			j = Utilities.UI(0, Lab15.numberOfCities);
+		}
+		int tempI = tour[i];
+		int tempJ = tour[j];
+		tour[i] = tempJ;
+		tour[j] = tempI;
+
 		System.out.println("Shuffled List: " + tour);
 		return tour;
 	}
