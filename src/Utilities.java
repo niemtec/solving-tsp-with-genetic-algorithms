@@ -195,7 +195,7 @@ public class Utilities {
 	 * @param tour           starting tour to calculate for
 	 * @return optimal temperature for the given dataset
 	 */
-	public static double CalculateStochasticTemperature(double[][] distanceMatrix, List<Integer> tour) {
+	public static double CalculateStochasticTemperature(double[][] distanceMatrix, List<Integer> tour, int numberOfIterations) {
 		double temperature;
 		//Get the total distance in the current dataset for later calculations
 		double totalDistance = GetTotalDistance(distanceMatrix);
@@ -203,42 +203,11 @@ public class Utilities {
 		Map<Integer, Double> map = new HashMap<>();
 
 		//Iterate through possible temperature scores
-		for (int k = 10; k < 10000; k++) {
+		for (int k = 0; k < 10000; k++) {
 			//Calculation used to determine the value of temperature for a temporary SHC test
 			double t = totalDistance / k;
 			//Testing the effectiveness of the current temperature based on the k reading
-			double fitnessScore = Algorithms.SHC(tour, 1000, t, false);
-			//Store the value in the map
-			map.put(k, fitnessScore);
-		}
-
-		//Find the smallest fitness in the map and return its key
-		int k = GetSmallestKey(map);
-
-		//Printouts used for checking the output of K and its temperature
-//		System.out.println("Smallest Value: " + map.values().stream().min(Double::compare).get());
-//		System.out.println("Best K: " + k);
-
-		//Use the equation T = F(D) / K to calculate the temperature
-		temperature = totalDistance / k;
-
-		return temperature;
-	}
-
-	public static double CalculateAnnealingTemperature(double[][] distanceMatrix, List<Integer> tour) {
-		double temperature;
-		//Get the total distance in the current dataset for later calculations
-		double totalDistance = GetTotalDistance(distanceMatrix);
-
-		//Hashmap storing the k value and the fitness reading used to determine the temperature
-		Map<Integer, Double> map = new HashMap<>();
-
-		//Iterate through possible temperature scores
-		for (int k = 10; k < 10000; k++) {
-			//Calculation used to determine the value of temperature for a temporary SHC test
-			double t = totalDistance / k;
-			//Testing the effectiveness of the current temperature based on the k reading
-			double fitnessScore = Lab15.SA(tour, 1000, t, 0.00003, false);
+			double fitnessScore = Algorithms.SHC(tour, numberOfIterations, t, false);
 			//Store the value in the map
 			map.put(k, fitnessScore);
 		}
@@ -248,7 +217,6 @@ public class Utilities {
 
 		//Use the equation T = F(D) / K to calculate the temperature
 		temperature = totalDistance / k;
-
 		return temperature;
 	}
 
