@@ -8,21 +8,21 @@ public class Algorithms {
 	 * @param numberOfIterations the total number of iterations to run the algorithm for
 	 * @return returns the most optimal tour after a given number of iterations
 	 */
-	public static List<Integer> RMHC(List<Integer> tour, int numberOfIterations) {
-		List<Integer> oldTour, newTour;
+	public static int[] RMHC(int[] tour, int numberOfIterations) {
+		int[] oldTour, newTour;
 		double oldFitness, newFitness;
 
-		newTour = tour;
+		newTour = tour.clone();
 		newFitness = Utilities.FitnessFunction(newTour);
 
 
 		for (int i = 1; i <= numberOfIterations; i++) {
 			//Save old values before making any changes
-			oldTour = newTour;
+			oldTour = newTour.clone();
 			oldFitness = newFitness;
 
 			//Make a small change
-			newTour = Utilities.Swap(oldTour);
+			newTour = Utilities.SmallChange(oldTour).clone();
 			//Calculate newest fitness
 			newFitness = Utilities.FitnessFunction(newTour);
 
@@ -30,7 +30,7 @@ public class Algorithms {
 			if (newFitness > oldFitness) {
 				//If new fitness is higher, use the old values
 				newFitness = oldFitness;
-				newTour = oldTour;
+				newTour = oldTour.clone();
 			}
 		}
 		System.out.println("Fitness: " + newFitness);
@@ -44,40 +44,40 @@ public class Algorithms {
 	 * @param numberOfIterations number of generations to run the algorithm for
 	 * @return returns the most optimal tour after a given number of iterations
 	 */
-	public static List<Integer> RRHC(List<Integer> tour, int numberOfIterations) {
+	public static int[] RRHC(int[] tour, int numberOfIterations) {
 		int numberOfRepeats = numberOfIterations / 10;
-		List<Integer> oldTour, newTour, bestTour;
+		int[] oldTour, newTour, bestTour;
 		double oldFitness, newFitness, bestFitness;
 
 		//Evaluate the fitness of the first tour
-		newTour = tour;
+		newTour = tour.clone();
 		newFitness = Utilities.FitnessFunction(newTour);
 
 		//Temporarily assume the first tour is the best
-		bestTour = newTour;
+		bestTour = newTour.clone();
 		bestFitness = Utilities.FitnessFunction(newTour);
 
 		for (int r = 1; r <= numberOfRepeats; r++) {
 			for (int i = 1; i <= numberOfIterations; i++) {
 				//Save old values before making any changes
-				oldTour = newTour;
+				oldTour = newTour.clone();
 				oldFitness = newFitness;
 
 				//Make a small change
-				newTour = Utilities.Swap(oldTour);
+				newTour = Utilities.SmallChange(oldTour).clone();
 				//Calculate newest fitness
 				newFitness = Utilities.FitnessFunction(newTour);
 
 				//We want to get the lowest possible tour length
 				if (newFitness >= oldFitness) {
 					newFitness = oldFitness;
-					newTour = oldTour;
+					newTour = oldTour.clone();
 				}
 			}
 			//Choose the best solution across generations
 			if (newFitness <= bestFitness) {
 				bestFitness = newFitness;
-				bestTour = newTour;
+				bestTour = newTour.clone();
 			}
 		}
 		System.out.println("Fitness: " + bestFitness);
@@ -85,22 +85,23 @@ public class Algorithms {
 	}
 
 
-	public static double SHC(List<Integer> tour, int numberOfIterations, double t, boolean reporting) {
-		List<Integer> oldTour, newTour, newTourTemp;
+	//FIXME
+	public static double SHC(int[] tour, int numberOfIterations, double t, boolean reporting) {
+		int[] oldTour, newTour, newTourTemp;
 		double oldFitness, newFitness, newFitnessTemp, random;
 		double p; // solution acceptance probability
 
 		// Calculate the starting fitness
-		newTour = tour;
+		newTour = tour.clone();
 		newFitness = Utilities.FitnessFunction(newTour);
 
 		for (int i = 1; i <= numberOfIterations; i++) {
 			//Save old values before making any changes
-			oldTour = newTour;
+			oldTour = newTour.clone();
 			oldFitness = newFitness;
 
 			//Make a small change and calculate the newest fitness
-			newTour = Utilities.Swap(oldTour);
+			newTour = Utilities.SmallChange(oldTour).clone();
 			newFitness = Utilities.FitnessFunction(newTour);
 
 			//If the current solution is worse than the previous one
@@ -111,29 +112,17 @@ public class Algorithms {
 				if (p >= Utilities.UR(0.0, 1.0)) {
 					// If the probability of accepting worse solution is high ... accept it
 					newFitness = newFitness;
-					newTour = newTour;
+					newTour = newTour.clone();
 				} else {
 					// Do not accept the worse solution
 					newFitness = oldFitness;
-					newTour = oldTour;
+					newTour = oldTour.clone();
 				}
 				// If fitness is the same
-			} else if (newFitness == oldFitness) {
-				// 50-50 chance of choosing old solution
-				int r = Utilities.UI(0, 1);
-				if (r == 0) {
-					// Choose new solution
-					newFitness = newFitness;
-					newTour = newTour;
-				} else {
-					// Choose old solution
-					newFitness = oldFitness;
-					newTour = oldTour;
-				}
 			} else {
 				// Accept the new solution
 				newFitness = newFitness;
-				newTour = newTour;
+				newTour = newTour.clone();
 			}
 		}
 

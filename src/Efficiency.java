@@ -56,12 +56,18 @@ public class Efficiency {
 	 * @param datasetSize   size of the current dataset (48, 200, etc...)
 	 * @return efficiency score of the given algorithm (double)
 	 */
-	private static double CalculateEfficiencyOfAlgorithm(double[][] distanceArray, double fitness, int datasetSize) {
+	public static double CalculateEfficiencyOfAlgorithm(double[][] distanceArray, double fitness, int datasetSize) {
 		double efficiencyScore;
 
-		ArrayList<Integer> optimalTour = TSP.ReadIntegerFile("data/TSP_" + datasetSize + "_OTP.txt");
+		ArrayList<Integer> optimalTourList = TSP.ReadIntegerFile("data/TSP_" + datasetSize + "_OTP.txt");
+		//TODO Convert ArrayList into an array
+		int listLength = optimalTourList.size();
+		int[] optimalTour = new int[listLength];
+		for (int i = 0; i < listLength; i++) {
+			optimalTour[i] = optimalTourList.get(i);
+		}
 
-		int tourSize = optimalTour.size();
+		int tourSize = optimalTour.length;
 		if (tourSize == 0) {
 			efficiencyScore = CalculateEfficiencyOfMST(distanceArray, fitness);
 		} else {
@@ -78,7 +84,7 @@ public class Efficiency {
 	 * @param optimalTour tour to be calculated
 	 * @return overall efficiency (as percentage)
 	 */
-	private static double CalculateEfficiencyOfOptimalTour(double fitness, ArrayList<Integer> optimalTour) {
+	private static double CalculateEfficiencyOfOptimalTour(double fitness, int[] optimalTour) {
 		double optimalTourFitness = Utilities.FitnessFunction(optimalTour);
 		double efficiency = (optimalTourFitness / fitness) * 100;
 

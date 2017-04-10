@@ -28,12 +28,32 @@ public class Lab15 {
 
 
 		Utilities.LoadDataFile(numberOfCities);
+		System.out.println("NUMBER OF CITIES: " + numberOfCities);
+		System.out.println("NUMBER OF ITERATIONS: " + numberOfIterations);
+
+		//TODO REMOVE AFTER TESTING
+		ArrayList<Integer> optimalTourList = TSP.ReadIntegerFile("data/TSP_48_OPT.txt");
+		//TODO Convert ArrayList into an array
+		int listLength = optimalTourList.size();
+		int[] optimalTour = new int[listLength];
+		for (int i = 0; i < listLength; i++) {
+			optimalTour[i] = optimalTourList.get(i);
+		}
+
+
 		//Generate the first base tour
 		tour = Utilities.PopulateCities(matrixSize);
+		System.out.println("INITIAL ROUTE: ");
+		Utilities.Print1DArray(tour);
 
 		//Set a random point in the search space
-		tour = Utilities.PermuteTour(tour);
-		System.out.println("Tour: " + tour);
+		tour = Utilities.RandomiseArray(tour);
+		System.out.println("STARTING ROUTE: ");
+		Utilities.Print1DArray(tour);
+
+		//TODO REMOVE AFTER TESTING
+		tour = optimalTour;
+		Utilities.Print1DArray(tour);
 
 		//Determine heuristically optimal temperature setting for the SHC
 		System.out.println("=== Calculating Temperature for SHC ===");
@@ -60,7 +80,7 @@ public class Lab15 {
 		}
 	}
 
-	static double SA(List<Integer> tour, int numberOfIterations, double startingTemperature, double coolingRate, boolean printFitness) {
+	static double SA(int[] tour, int numberOfIterations, double startingTemperature, double coolingRate, boolean printFitness) {
 		//List<Integer> oldTour, newTour, bestTour;
 		List<Double> temperature = new ArrayList<>();
 		double oldFitness, newFitness, bestFitness, temp;
@@ -73,17 +93,17 @@ public class Lab15 {
 		temperature.add(0, startingTemperature);
 
 		// Calculate the starting fitness
-		newTour = tour;
+		newTour = tour.clone();
 		newFitness = Utilities.FitnessFunction(newTour);
 		bestFitness = newFitness;
 
 		for (int i = 0; i < numberOfIterations; i++) {
 			//Save old values before making any changes
-			oldTour = newTour;
+			oldTour = newTour.clone();
 			oldFitness = newFitness;
 
 			//Make a small change and calculate the newest fitness
-			newTour = Utilities.Swap(oldTour);
+			newTour = Utilities.SmallChange(oldTour);
 			newFitness = Utilities.FitnessFunction(newTour);
 
 			if (newFitness > oldFitness) {
@@ -94,26 +114,25 @@ public class Lab15 {
 				if (p < Utilities.UR(0.0, 1.0)) {
 					//Reject Change, keep x and f
 					newFitness = oldFitness;
-					newTour = oldTour;
+					newTour = oldTour.clone();
 				} else {
 					//Accept the change, use x' and f'
 					newFitness = newFitness;
-					newTour = newTour;
+					newTour = newTour.clone();
 				}
 
 			} else {
 				oldFitness = newFitness;
-				oldTour = newTour;
+				oldTour = newTour.clone();
 			}
+
+			double currentTemperature = temperature.get(i);
+			temp = coolingRate * currentTemperature;
+			temperature.add(i + 1, temp);
 		}
-
-		double currentTemperature = temperature.get(i);
-		temp = coolingRate * currentTemperature;
-		temperature.add(i + 1, temp);
-
-
 		if (printFitness == true) {
 			System.out.println("Fitness: " + bestFitness);
+
 		}
 
 		return bestFitness;

@@ -44,26 +44,22 @@ public class Utilities {
 	}
 
 	/**
-	 * Creates a permutation of a given tour
-	 * @param tour tour to be permuted
-	 * @return permuted tour
+	 * Creates a small change of a given tour
+	 * @param tour tour to be modified
+	 * @return modified tour
 	 */
-	public static int[] PermuteTour(int[] tour) {
-		int[] resultantPermutation = new int[Lab15.numberOfCities];
-		System.out.println("Initial List: " + tour);
-
-		//Shuffle the tour
+	public static int[] SmallChange(int[] tour) {
 		int i = 0, j = 0;
+
 		while (i == j) {
-			i = Utilities.UI(0, Lab15.numberOfCities);
-			j = Utilities.UI(0, Lab15.numberOfCities);
+			i = Utilities.UI(0, Lab15.numberOfCities - 1);
+			j = Utilities.UI(0, Lab15.numberOfCities - 1);
 		}
+
 		int tempI = tour[i];
 		int tempJ = tour[j];
 		tour[i] = tempJ;
 		tour[j] = tempI;
-
-		System.out.println("Shuffled List: " + tour);
 		return tour;
 	}
 
@@ -74,22 +70,22 @@ public class Utilities {
 	 * @param tour a list of integers of size N (tour taken by the salesman)
 	 * @return the tour length s (the fitness, lower is better)
 	 */
-	public static double FitnessFunction(List<Integer> tour) {
+	public static double FitnessFunction(int[] tour) {
 		int numberOfCities = Lab15.matrixSize;
 		int startCity, endCity, cityA, cityB;
 		double s = 0.0;
 
 		for (int i = 0; i < numberOfCities; i++) {
 			if (i != numberOfCities - 1) {
-				cityA = tour.get(i);
-				cityB = tour.get(i + 1);
+				cityA = tour[i];
+				cityB = tour[i + 1];
 				s = s + GetDistance(cityA, cityB);
 			} else {
 				break;
 			}
 		}
-		startCity = tour.get(0);
-		endCity = tour.get(numberOfCities - 1);
+		startCity = tour[0];
+		endCity = tour[(numberOfCities - 1)];
 		//Add the return trip
 		s = s + GetDistance(endCity, startCity);
 		return s;
@@ -100,7 +96,7 @@ public class Utilities {
 	 *
 	 * @param array input array to be printed
 	 */
-	public static void PrintArray(double[][] array) {
+	public static void Print2DArray(double[][] array) {
 		int xLength = array[0].length;
 		int yLength = array[1].length;
 		int y, x;
@@ -118,6 +114,14 @@ public class Utilities {
 			System.out.println("WARNING: INCORRECT MATRIX ENTERED. INDEX OUT OF BOUNDS.");
 			System.out.println();
 		}
+	}
+
+	public static void Print1DArray(int[] array) {
+		int length = array.length;
+		for (int i = 0; i < length; i++) {
+			System.out.print(array[i] + " ");
+		}
+		System.out.println();
 	}
 
 	/**
@@ -176,6 +180,7 @@ public class Utilities {
 		} catch (Exception e) {
 			System.out.println(e.getClass() + " === FILE NOT FOUND ===");
 		}
+
 		Lab15.matrixSize = Lab15.matrixDimensionCountArray.length;
 		Lab15.distanceArray = new double[Lab15.matrixSize][Lab15.matrixSize];
 		Lab15.distanceArray = TSP.ReadArrayFile(baseFileLocation, " ");
@@ -206,7 +211,7 @@ public class Utilities {
 	 * @param tour           starting tour to calculate for
 	 * @return optimal temperature for the given dataset
 	 */
-	public static double CalculateStochasticTemperature(double[][] distanceMatrix, List<Integer> tour, int numberOfIterations) {
+	public static double CalculateStochasticTemperature(double[][] distanceMatrix, int[] tour, int numberOfIterations) {
 		double temperature;
 		//Get the total distance in the current dataset for later calculations
 		double totalDistance = GetTotalDistance(distanceMatrix);
@@ -267,5 +272,18 @@ public class Utilities {
 			}
 		}
 		return minKey;
+	}
+
+	public static int[] RandomiseArray(int[] array) {
+		Random rgen = new Random();  // Random number generator
+
+		for (int i = 0; i < array.length; i++) {
+			int randomPosition = rgen.nextInt(array.length);
+			int temp = array[i];
+			array[i] = array[randomPosition];
+			array[randomPosition] = temp;
+		}
+
+		return array;
 	}
 }
