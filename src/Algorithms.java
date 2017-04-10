@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Algorithms {
@@ -8,21 +9,21 @@ public class Algorithms {
 	 * @param numberOfIterations the total number of iterations to run the algorithm for
 	 * @return returns the most optimal tour after a given number of iterations
 	 */
-	public static List<Integer> RMHC(List<Integer> tour, int numberOfIterations) {
-		List<Integer> oldTour, newTour;
+	public static ArrayList<Integer> RMHC(ArrayList<Integer> tour, int numberOfIterations) {
+		ArrayList<Integer> oldTour, newTour;
 		double oldFitness, newFitness;
 
-		newTour = tour;
+		newTour = new ArrayList<>(tour);
 		newFitness = Utilities.FitnessFunction(newTour);
 
 
 		for (int i = 1; i <= numberOfIterations; i++) {
 			//Save old values before making any changes
-			oldTour = newTour;
+			oldTour = new ArrayList<>(newTour);
 			oldFitness = newFitness;
 
 			//Make a small change
-			newTour = Utilities.Swap(oldTour);
+			newTour = new ArrayList<>(Utilities.Swap(oldTour));
 			//Calculate newest fitness
 			newFitness = Utilities.FitnessFunction(newTour);
 
@@ -30,7 +31,7 @@ public class Algorithms {
 			if (newFitness > oldFitness) {
 				//If new fitness is higher, use the old values
 				newFitness = oldFitness;
-				newTour = oldTour;
+				newTour = new ArrayList<>(oldTour);
 			}
 		}
 		System.out.println("Fitness: " + newFitness);
@@ -44,13 +45,13 @@ public class Algorithms {
 	 * @param numberOfIterations number of generations to run the algorithm for
 	 * @return returns the most optimal tour after a given number of iterations
 	 */
-	public static List<Integer> RRHC(List<Integer> tour, int numberOfIterations) {
+	public static ArrayList<Integer> RRHC(ArrayList<Integer> tour, int numberOfIterations) {
 		int numberOfRepeats = numberOfIterations / 10;
-		List<Integer> oldTour, newTour, bestTour;
+		ArrayList<Integer> oldTour, newTour, bestTour;
 		double oldFitness, newFitness, bestFitness;
 
 		//Evaluate the fitness of the first tour
-		newTour = tour;
+		newTour = new ArrayList<>(tour);
 		newFitness = Utilities.FitnessFunction(newTour);
 
 		//Temporarily assume the first tour is the best
@@ -60,24 +61,24 @@ public class Algorithms {
 		for (int r = 1; r <= numberOfRepeats; r++) {
 			for (int i = 1; i <= numberOfIterations; i++) {
 				//Save old values before making any changes
-				oldTour = newTour;
+				oldTour = new ArrayList<>(newTour);
 				oldFitness = newFitness;
 
 				//Make a small change
-				newTour = Utilities.Swap(oldTour);
+				newTour = new ArrayList<>(Utilities.Swap(oldTour));
 				//Calculate newest fitness
 				newFitness = Utilities.FitnessFunction(newTour);
 
 				//We want to get the lowest possible tour length
 				if (newFitness >= oldFitness) {
 					newFitness = oldFitness;
-					newTour = oldTour;
+					newTour = new ArrayList<>(oldTour);
 				}
 			}
 			//Choose the best solution across generations
 			if (newFitness <= bestFitness) {
 				bestFitness = newFitness;
-				bestTour = newTour;
+				bestTour = new ArrayList<>(newTour);
 			}
 		}
 		System.out.println("Fitness: " + bestFitness);
@@ -85,22 +86,22 @@ public class Algorithms {
 	}
 
 
-	public static double SHC(List<Integer> tour, int numberOfIterations, double t, boolean reporting) {
-		List<Integer> oldTour, newTour, newTourTemp;
+	public static double SHC(ArrayList<Integer> tour, int numberOfIterations, double t, boolean reporting) {
+		ArrayList<Integer> oldTour, newTour, newTourTemp;
 		double oldFitness, newFitness, newFitnessTemp, random;
 		double p; // solution acceptance probability
 
 		// Calculate the starting fitness
-		newTour = tour;
+		newTour = new ArrayList<>(tour);
 		newFitness = Utilities.FitnessFunction(newTour);
 
 		for (int i = 1; i <= numberOfIterations; i++) {
 			//Save old values before making any changes
-			oldTour = newTour;
+			oldTour = new ArrayList<>(newTour);
 			oldFitness = newFitness;
 
 			//Make a small change and calculate the newest fitness
-			newTour = Utilities.Swap(oldTour);
+			newTour = new ArrayList<>(Utilities.Swap(oldTour));
 			newFitness = Utilities.FitnessFunction(newTour);
 
 			//If the current solution is worse than the previous one
@@ -111,11 +112,11 @@ public class Algorithms {
 				if (p >= Utilities.UR(0.0, 1.0)) {
 					// If the probability of accepting worse solution is high ... accept it
 					newFitness = newFitness;
-					newTour = newTour;
+					newTour = new ArrayList<>(newTour);
 				} else {
 					// Do not accept the worse solution
 					newFitness = oldFitness;
-					newTour = oldTour;
+					newTour = new ArrayList<>(oldTour);
 				}
 				// If fitness is the same
 			} else if (newFitness == oldFitness) {
@@ -124,16 +125,16 @@ public class Algorithms {
 				if (r == 0) {
 					// Choose new solution
 					newFitness = newFitness;
-					newTour = newTour;
+					newTour = new ArrayList<>(newTour);
 				} else {
 					// Choose old solution
 					newFitness = oldFitness;
-					newTour = oldTour;
+					newTour = new ArrayList<>(oldTour);
 				}
 			} else {
 				// Accept the new solution
 				newFitness = newFitness;
-				newTour = newTour;
+				newTour = new ArrayList<>(newTour);
 			}
 		}
 

@@ -48,7 +48,7 @@ public class Utilities {
 	 * @param tour tour to be permuted
 	 * @return permuted tour
 	 */
-	public static List<Integer> PermuteTour(List<Integer> tour) {
+	public static ArrayList<Integer> PermuteTour(ArrayList<Integer> tour) {
 		List<Integer> resultantPermutation = new ArrayList<>();
 		System.out.println("Initial List: " + tour);
 		Collections.shuffle(tour);
@@ -115,7 +115,7 @@ public class Utilities {
 	 * @param tour tour to be altered
 	 * @return altered version of the tour
 	 */
-	public static List<Integer> Swap(List<Integer> tour) {
+	public static ArrayList<Integer> Swap(ArrayList<Integer> tour) {
 		int i = 0, j = 0;
 		int tourSize = tour.size();
 		//Choose two random elements of T where i ≠ j
@@ -195,7 +195,7 @@ public class Utilities {
 	 * @param tour           starting tour to calculate for
 	 * @return optimal temperature for the given dataset
 	 */
-	public static double CalculateStochasticTemperature(double[][] distanceMatrix, List<Integer> tour, int numberOfIterations) {
+	public static double CalculateStochasticTemperature(double[][] distanceMatrix, ArrayList<Integer> tour, int numberOfIterations) {
 		double temperature;
 		//Get the total distance in the current dataset for later calculations
 		double totalDistance = GetTotalDistance(distanceMatrix);
@@ -211,12 +211,12 @@ public class Utilities {
 			//Store the value in the map
 			map.put(k, fitnessScore);
 		}
-
 		//Find the smallest fitness in the map and return its key
 		int k = GetSmallestKey(map);
 
 		//Use the equation T = F(D) / K to calculate the temperature
 		temperature = totalDistance / k;
+
 		return temperature;
 	}
 
