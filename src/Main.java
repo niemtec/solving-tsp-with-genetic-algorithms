@@ -18,7 +18,8 @@ public class Main {
 	static double[][] distanceArray;
 
 	public static void main(String args[]) {
-		ArrayList<Integer> tour; //Stores the current tour
+		ArrayList<Integer> tour, saTour, rrhcTour, rmhcTour, shcTour;
+		double fitness;
 
 		distanceArray = Tools.LoadDataFile(numberOfCities);
 
@@ -36,28 +37,38 @@ public class Main {
 
 		System.out.println("Simulated Annealing");
 		//Starting temperature derived from running various experiments
-		ArrayList<Integer> saTour = Algorithms.SA(tour, 10000.0, numberOfIterations, coolingRate, true);
-		printToFile(Performance.CalculateFitness(saTour), "results/SimulatedAnnealing.txt");
+		saTour = Algorithms.SA(tour, 10000.0, numberOfIterations, coolingRate, true);
+		saveResults(saTour, "SimulatedAnnealing", true);
 
 		System.out.println("Random Restart Hill Climber");
-		ArrayList<Integer> rrhcTour = Algorithms.RRHC(tour, numberOfIterations, true);
-		printToFile(Performance.CalculateFitness(rrhcTour), "results/RandomRestartHillClimbing.txt");
+		rrhcTour = Algorithms.RRHC(tour, numberOfIterations, true);
+		saveResults(rrhcTour, "RandomRestartHillClimber", true);
 
 		System.out.println("Stochastic Hill Climber");
-		ArrayList<Integer> shcTour = Algorithms.SHC(tour, numberOfIterations, stochasticTemperature, true);
-		printToFile(Performance.CalculateFitness(shcTour), "results/StochasticHillClimber.txt");
+		shcTour = Algorithms.SHC(tour, numberOfIterations, stochasticTemperature, true);
+		saveResults(shcTour, "StochasticHillClimber", true);
 
 		System.out.println("Random Mutation Hill Climber");
-		ArrayList<Integer> rmhcTour = Algorithms.RMHC(tour, numberOfIterations, true);
-		printToFile(Performance.CalculateFitness(rmhcTour), "results/RandomMutationHillClimber.txt");
+		rmhcTour = Algorithms.RMHC(tour, numberOfIterations, true);
+		saveResults(rmhcTour, "RandomMutationHillClimbing", true);
 	}
 
-	private static void printToFile(double fitness, String filename) {
+	private static void saveResults(ArrayList<Integer> tour, String fileName, boolean appendMode) {
+		double fitness = Performance.CalculateFitness(tour);
+		printToFile(fitness,
+				Performance.CalculateEfficiencyOfMST(fitness),
+				Performance.CalculateEfficiency(fitness),
+				"results/" + fileName + ".txt", appendMode);
+	}
+
+	private static void printToFile(double fitness, double mst, double op, String filename, boolean appendMode) {
 		String fitnessString = Double.toString(fitness);
+		String mstString = Double.toString(mst);
+		String opString = Double.toString(op);
 
 		try {
-			FileWriter writer = new FileWriter(filename, true);
-			writer.write(fitnessString);
+			FileWriter writer = new FileWriter(filename, appendMode);
+			writer.write(fitnessString + "," + mstString + "," + opString);
 			writer.write("\r\n");   // New Line
 			writer.close();
 		} catch (IOException e) {
