@@ -8,15 +8,12 @@ public class Performance {
 	 * @return percentage efficiency of a given fitness
 	 */
 	static double CalculateEfficiency(double fitness) {
-		ArrayList<Integer> optimalTour = new ArrayList<>();
 		double efficiency;
-		try {
-			optimalTour = TSP.ReadIntegerFile("data/TSP_" + Main.numberOfCities + "_OPT.txt");
-		} catch (Exception e) {
-			optimalTour = new ArrayList<>();
-		}
+		ArrayList<Integer> optimalTour;
+		optimalTour = TSP.ReadIntegerFile("data/TSP_" + Main.numberOfCities + "_OPT.txt");
 
 		int tourSize = optimalTour.size();
+
 		if (tourSize == 0) {
 			efficiency = CalculateEfficiencyOfMST(fitness);
 		} else {

@@ -143,4 +143,47 @@ public class Tools {
 
 		return p;
 	}
+
+	static double CalculateCoolingRate(double startingTemperature, int numberOfIterations) {
+		double tIter, tValue, coolingRate, powerValue;
+		int iter;
+
+		tIter = 0.001; //Number from lecture slides
+		iter = numberOfIterations;
+
+		tValue = tIter / startingTemperature;
+		powerValue = 1.0 / iter;
+
+		coolingRate = Math.pow(tValue, powerValue);
+
+		return coolingRate;
+	}
+
+	static double PR(double newFitness, double oldFitness, double temperature) {
+		double changeInFitness = Math.abs(newFitness - oldFitness);
+		changeInFitness = -1 * changeInFitness;
+		double prScore = Math.exp(changeInFitness / temperature);
+		return prScore;
+	}
+
+	private static double CalculateStochasticTemperature(ArrayList<Integer> tour) {
+		ArrayList<Double> allTemperatures = new ArrayList<>();
+		ArrayList<Integer> tempTour = new ArrayList<>();
+		double t;
+
+		System.out.println("Calculating Average Stochastic Temperature");
+
+		for (int i = 0; i < 5; i++) {
+			System.out.print(".");
+			for (t = 5000; t < 10000; t++) {
+				tempTour = Algorithms.SHC(tour, 1000, t, false);
+				double fitness = Performance.CalculateFitness(tempTour);
+				allTemperatures.add(fitness);
+			}
+		}
+		t = CalculateAverage(allTemperatures);
+		System.out.println("Tep: " + t);
+		System.out.println();
+		return t;
+	}
 }

@@ -123,4 +123,46 @@ public class Algorithms {
 		}
 		return tour;
 	}
+
+	static ArrayList<Integer> SA(ArrayList<Integer> tour, double temperature, int numberOfIterations, double coolingRate, boolean printReport) {
+		ArrayList<Integer> oldTour;
+		double fitness = 0, newFitness, p;
+
+		for (int i = 0; i < numberOfIterations; i++) {
+			//Save the current tour as a copy into the old tour
+			oldTour = (ArrayList<Integer>) tour.clone();
+
+			//Calculate the current fitness (before change)
+			fitness = Performance.CalculateFitness(tour);
+
+			//Cause a small change to the tour
+			tour = Tools.SmallChange(tour);
+
+			//Calculate new fitness after causing the small change
+			newFitness = Performance.CalculateFitness(tour);
+
+			if (newFitness > fitness) {
+				//Calculate p
+				p = Tools.PR(newFitness, fitness, temperature);
+				if (p < Tools.UR(0.0, 1.0)) {
+					//Reject the change and restore previous tour
+					tour = oldTour;
+				} else {
+					//Accept the change
+					//Don't do anything
+				}
+			} else {
+				//Accept the change
+				//Don't do anything
+			}
+			temperature = coolingRate * temperature;
+		}
+
+		if (printReport == true) {
+			//Calculate efficiency against optimal settings
+			double efficiency = Performance.CalculateEfficiency(fitness);
+			System.out.println("Fitness: " + fitness + " | Efficiency: " + efficiency + "%");
+		}
+		return tour;
+	}
 }
