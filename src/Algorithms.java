@@ -13,14 +13,15 @@ public class Algorithms {
 	static ArrayList<Integer> RRHC(ArrayList<Integer> tour, int numberOfIterations, boolean printReport) {
 		ArrayList<Integer> currentTour; //Stores current tour from the RMHC
 		ArrayList<Integer> bestTour = new ArrayList<>(); //Stores best tour
+		int numberOfRepeats = 2;
 
 		//Get temporary fitness as best fitness
 		double bestFitness = Performance.CalculateFitness(tour);
 		double fitness; //Current fitness
-		for (int r = 0; r < 10; r++) {
+		for (int r = 0; r < numberOfRepeats; r++) {
 			//Generate a random starting point for the next RMHC tour
 			Collections.shuffle(tour);
-			currentTour = RMHC(tour, numberOfIterations / 10, false);
+			currentTour = RMHC(tour, numberOfIterations / numberOfRepeats, false);
 			fitness = Performance.CalculateFitness(currentTour);
 
 			if (fitness < bestFitness) {
