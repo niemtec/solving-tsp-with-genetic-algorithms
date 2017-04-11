@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -34,19 +36,34 @@ public class Main {
 
 		System.out.println("Simulated Annealing");
 		//Starting temperature derived from running various experiments
-		Algorithms.SA(tour, 10000.0, numberOfIterations, coolingRate, true);
+		ArrayList<Integer> saTour = Algorithms.SA(tour, 10000.0, numberOfIterations, coolingRate, true);
+		printToFile(Performance.CalculateFitness(saTour), "results/SimulatedAnnealing.txt");
 
 		System.out.println("Random Restart Hill Climber");
-		Algorithms.RRHC(tour, numberOfIterations, true);
+		ArrayList<Integer> rrhcTour = Algorithms.RRHC(tour, numberOfIterations, true);
+		printToFile(Performance.CalculateFitness(rrhcTour), "results/RandomRestartHillClimbing.txt");
 
 		System.out.println("Stochastic Hill Climber");
-		Algorithms.SHC(tour, numberOfIterations, stochasticTemperature, true);
+		ArrayList<Integer> shcTour = Algorithms.SHC(tour, numberOfIterations, stochasticTemperature, true);
+		printToFile(Performance.CalculateFitness(shcTour), "results/StochasticHillClimber.txt");
 
 		System.out.println("Random Mutation Hill Climber");
-		Algorithms.RMHC(tour, numberOfIterations, true);
+		ArrayList<Integer> rmhcTour = Algorithms.RMHC(tour, numberOfIterations, true);
+		printToFile(Performance.CalculateFitness(rmhcTour), "results/RandomMutationHillClimber.txt");
 	}
-	static void recordFitness(double fitness) {
 
+	private static void printToFile(double fitness, String filename) {
+		String fitnessString = Double.toString(fitness);
+
+		try {
+			FileWriter writer = new FileWriter(filename, true);
+			writer.write(fitnessString);
+			writer.write("\r\n");   // New Line
+			writer.close();
+		} catch (IOException e) {
+			System.out.println("ERROR. SPECIFIED OUTPUT FILE NOT FOUND.");
+			e.printStackTrace();
+		}
 	}
 }
 
