@@ -45,5 +45,8 @@ public class Main {
 		System.out.println("Random Mutation Hill Climber");
 		Algorithms.RMHC(tour, numberOfIterations, true);
 	}
+	static void recordFitness(double fitness) {
+
+	}
 }
 

@@ -34,8 +34,8 @@ public class Algorithms {
 		if (printReport == true) {
 			//Calculate efficiency against optimal settings
 			double efficiency = Performance.CalculateEfficiency(bestFitness);
-			System.out.println("Fitness: " + bestFitness + " | Efficiency: " + efficiency + "%");
-		}
+			double mstEfficiency = Performance.CalculateEfficiencyOfMST(bestFitness);
+			System.out.println("Fitness: " + bestFitness + " | MST Efficiency: " + mstEfficiency + "% | Optimal Efficiency: " + efficiency + "%");		}
 		return bestTour;
 	}
 
@@ -72,8 +72,8 @@ public class Algorithms {
 		if (printReport == true) {
 			//Calculate efficiency against optimal settings
 			double efficiency = Performance.CalculateEfficiency(fitness);
-			System.out.println("Fitness: " + fitness + " | Efficiency: " + efficiency + "%");
-		}
+			double mstEfficiency = Performance.CalculateEfficiencyOfMST(fitness);
+			System.out.println("Fitness: " + fitness + " | MST Efficiency: " + mstEfficiency + "% | Optimal Efficiency: " + efficiency + "%");		}
 		return tour;
 	}
 
@@ -120,8 +120,8 @@ public class Algorithms {
 		if (printReport == true) {
 			//Calculate efficiency against optimal settings
 			double efficiency = Performance.CalculateEfficiency(fitness);
-			System.out.println("Fitness: " + fitness + " | Efficiency: " + efficiency + "%");
-		}
+			double mstEfficiency = Performance.CalculateEfficiencyOfMST(fitness);
+			System.out.println("Fitness: " + fitness + " | MST Efficiency: " + mstEfficiency + "% | Optimal Efficiency: " + efficiency + "%");		}
 		return tour;
 	}
 
@@ -162,8 +162,8 @@ public class Algorithms {
 		if (printReport == true) {
 			//Calculate efficiency against optimal settings
 			double efficiency = Performance.CalculateEfficiency(fitness);
-			System.out.println("Fitness: " + fitness + " | Efficiency: " + efficiency + "%");
-		}
+			double mstEfficiency = Performance.CalculateEfficiencyOfMST(fitness);
+			System.out.println("Fitness: " + fitness + " | MST Efficiency: " + mstEfficiency + "% | Optimal Efficiency: " + efficiency + "%");		}
 		return tour;
 	}
 }
