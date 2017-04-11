@@ -10,7 +10,7 @@ public class Performance {
 	static double CalculateEfficiency(double fitness) {
 		double efficiency;
 		ArrayList<Integer> optimalTour;
-		optimalTour = TSP.ReadIntegerFile("data/TSP_" + Main.numberOfCities + "_OPT.txt");
+		optimalTour = TSP.readIntegerFile("data/TSP_" + Main.numberOfCities + "_OPT.txt");
 
 		int tourSize = optimalTour.size();
 
@@ -32,7 +32,7 @@ public class Performance {
 	 * @param optimalTour optimal tour to compare vs fitness
 	 * @return efficiency (as percentage)
 	 */
-	static double CalculateEfficiencyOfOT(double fitness, ArrayList<Integer> optimalTour) {
+	private static double CalculateEfficiencyOfOT(double fitness, ArrayList<Integer> optimalTour) {
 		double optimalTourFitness = CalculateFitness(optimalTour);
 		double efficiency = (optimalTourFitness / fitness) * 100;
 
@@ -61,7 +61,7 @@ public class Performance {
 	 * @param mstArray minimum spanning tree array to calculate fitness for
 	 * @return fitness score of the mst
 	 */
-	static double CalculateFitnessOfMST(double[][] mstArray) {
+	private static double CalculateFitnessOfMST(double[][] mstArray) {
 		double fitness = 0.0;
 		for (int i = 0; i < mstArray.length; i++) {
 			for (int j = 0; j < mstArray[i].length; j++) {
@@ -77,8 +77,8 @@ public class Performance {
 	 *
 	 * @return minimum spanning tree of the distance array
 	 */
-	static double[][] CalculateMST() {
-		double[][] mstOfArray = MST.PrimsMST(Main.distanceArray);
+	private static double[][] CalculateMST() {
+		double[][] mstOfArray = MST.primsMST(Main.distanceArray);
 		return mstOfArray;
 	}
 

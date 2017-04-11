@@ -1,8 +1,6 @@
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Random;
 
 public class Tools {
@@ -30,7 +28,7 @@ public class Tools {
 	}
 
 	//Create a uniformly distributed random integer between aa and bb inclusive
-	public static int UI(int aa, int bb) {
+	private static int UI(int aa, int bb) {
 		int a = Math.min(aa, bb);
 		int b = Math.max(aa, bb);
 		if (rand == null) {
@@ -52,8 +50,8 @@ public class Tools {
 		String baseFileExtension = ".txt";
 		String baseFileLocation = baseFileName + Integer.toString(dataSize) + baseFileExtension;
 
-		double[][] array = new double[Main.numberOfCities][Main.numberOfCities];
-		array = TSP.ReadArrayFile(baseFileLocation, " ");
+		double[][] array;
+		array = TSP.readArrayFile(baseFileLocation, " ");
 
 		System.out.println("TSP Data file loaded");
 
@@ -75,16 +73,8 @@ public class Tools {
 		return tour;
 	}
 
-	public static ArrayList<Integer> PermuteTour(ArrayList<Integer> tour) {
-		List<Integer> resultantPermutation = new ArrayList<>();
-		System.out.println("Initial List: " + tour);
-		Collections.shuffle(tour);
-		System.out.println("Shuffled List: " + tour);
-		return tour;
-	}
-
 	//Create a uniformly distributed random double between a and b inclusive
-	public static double UR(double a, double b) {
+	static double UR(double a, double b) {
 		if (rand == null) {
 			rand = new Random();
 			rand.setSeed(System.nanoTime());
@@ -93,12 +83,14 @@ public class Tools {
 	}
 
 	// Rounds decimals to 3d.p. then returns as string for printing
-	public static double RoundDecimal(double decimal) {
+	static double RoundDecimal(double decimal) {
+		double outputAsDouble;
+
 		DecimalFormat df = new DecimalFormat("#.##");
 		df.setRoundingMode(RoundingMode.CEILING);
 		String output = df.format(decimal);
 
-		double outputAsDouble = Double.parseDouble(output);
+		outputAsDouble = Double.parseDouble(output);
 		return outputAsDouble;
 	}
 
@@ -116,7 +108,7 @@ public class Tools {
 	 * @param array input array list
 	 * @return average of a given array list
 	 */
-	static double CalculateAverage(ArrayList<Double> array) {
+	private static double CalculateAverage(ArrayList<Double> array) {
 		double total = 0, length;
 		length = array.size();
 
@@ -168,20 +160,16 @@ public class Tools {
 
 	private static double CalculateStochasticTemperature(ArrayList<Integer> tour) {
 		ArrayList<Double> allTemperatures = new ArrayList<>();
-		ArrayList<Integer> tempTour = new ArrayList<>();
-		double t;
-
 		System.out.println("Calculating Average Stochastic Temperature");
 
 		for (int i = 0; i < 5; i++) {
 			System.out.print(".");
-			for (t = 5000; t < 10000; t++) {
-				tempTour = Algorithms.SHC(tour, 1000, t, false);
-				double fitness = Performance.CalculateFitness(tempTour);
+			for (int t = 5000; t < 10000; t++) {
+				double fitness = Performance.CalculateFitness(Algorithms.SHC(tour, 1000, t, false));
 				allTemperatures.add(fitness);
 			}
 		}
-		t = CalculateAverage(allTemperatures);
+		double t = CalculateAverage(allTemperatures);
 		System.out.println("Tep: " + t);
 		System.out.println();
 		return t;

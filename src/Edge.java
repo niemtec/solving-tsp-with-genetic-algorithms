@@ -9,7 +9,7 @@ public class Edge extends Object {
 		w = ww;
 	}
 
-	public void Print() {
+	public void print() {
 		System.out.print("(");
 		System.out.print(i);
 		System.out.print(",");

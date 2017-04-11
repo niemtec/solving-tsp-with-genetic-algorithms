@@ -7,8 +7,8 @@ import java.util.ArrayList;
 //Some useful code for the CS2004 (2016-2017) Travelling Salesman Worksheet
 public class TSP {
 
-	//Print a 2D double array to the console Window
-	static public void PrintArray(double x[][]) {
+	//print a 2D double array to the console Window
+	static public void printArray(double x[][]) {
 		for (int i = 0; i < x.length; ++i) {
 			for (int j = 0; j < x[i].length; ++j) {
 				System.out.print(x[i][j]);
@@ -23,7 +23,7 @@ public class TSP {
 	//This code is not very good and can be improved!
 	//But it should work!!!
 	//'sep' is the separator between columns
-	static public double[][] ReadArrayFile(String filename, String sep) {
+	static public double[][] readArrayFile(String filename, String sep) {
 		double res[][] = null;
 		try {
 			BufferedReader input = null;
@@ -49,7 +49,7 @@ public class TSP {
 				++i;
 			}
 		} catch (Exception E) {
-			System.out.println("+++ReadArrayFile: " + E.getMessage());
+			System.out.println("+++readArrayFile: " + E.getMessage());
 		}
 		return (res);
 	}
@@ -58,7 +58,7 @@ public class TSP {
 	//This code is not very good and can be improved!
 	//But it should work!!!
 	//It takes in as input a string filename and returns an array list of Integers
-	static public ArrayList<Integer> ReadIntegerFile(String filename) {
+	static public ArrayList<Integer> readIntegerFile(String filename) {
 		ArrayList<Integer> res = new ArrayList<Integer>();
 		Reader r;
 		try {
@@ -73,7 +73,7 @@ public class TSP {
 				stok.nextToken();
 			}
 		} catch (Exception E) {
-			System.out.println("+++ReadIntegerFile: " + E.getMessage());
+			System.out.println("+++readIntegerFile: " + E.getMessage());
 		}
 		return (res);
 	}

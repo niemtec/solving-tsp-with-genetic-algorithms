@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public class MST {
+class MST {
 	//Search for the next applicable edge
 	static private Edge LocateEdge(ArrayList<Integer> v, ArrayList<Edge> edges) {
 		for (Iterator<Edge> it = edges.iterator(); it.hasNext(); ) {
@@ -24,7 +24,7 @@ public class MST {
 
 	//d is a distance matrix, high value edges are more costly
 	//Assume that d is symmetric and square
-	public static double[][] PrimsMST(double[][] d) {
+	static double[][] primsMST(double[][] d) {
 		int i, j, n = d.length;
 		double res[][] = new double[n][n];
 		//Store edges as an ArrayList
