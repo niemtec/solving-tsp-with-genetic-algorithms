@@ -12,14 +12,14 @@ import java.util.Collections;
 
 public class Main {
 	static int numberOfCities = 442;
-	static int numberOfIterations = 10000000;
+	static int numberOfIterations = 10000;
 	static int numberOfRepetitions = 0;
 	static double[][] distanceArray;
 
 	public static void main(String args[]) {
 		ArrayList<Integer> tour, saTour, rrhcTour, rmhcTour, shcTour;
 
-		while (numberOfIterations <= 50000) {
+		while (numberOfIterations <= 100000) {
 			for (numberOfRepetitions = 0; numberOfRepetitions < 20; numberOfRepetitions++) {
 				System.out.println("> RUNNING REPETITION NUMBER " + numberOfRepetitions + ".");
 
@@ -56,7 +56,7 @@ public class Main {
 				rmhcTour = Algorithms.RMHC(tour, numberOfIterations, true);
 				Tools.saveResults(rmhcTour, "RandomMutationHillClimbing", true);
 			}
-			numberOfIterations = numberOfIterations + 1000;
+			numberOfIterations = numberOfIterations + 10000;
 		}
 
 		System.out.println("> CALCULATIONS COMPLETE.");
