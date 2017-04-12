@@ -1,5 +1,3 @@
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -38,43 +36,20 @@ public class Main {
 		System.out.println("Simulated Annealing");
 		//Starting temperature derived from running various experiments
 		saTour = Algorithms.SA(tour, 10000.0, numberOfIterations, coolingRate, true);
-		saveResults(saTour, "SimulatedAnnealing", true);
+		Tools.saveResults(saTour, "SimulatedAnnealing", true);
 
 		System.out.println("Random Restart Hill Climber");
 		rrhcTour = Algorithms.RRHC(tour, numberOfIterations, true);
-		saveResults(rrhcTour, "RandomRestartHillClimber", true);
+		Tools.saveResults(rrhcTour, "RandomRestartHillClimber", true);
 
 		System.out.println("Stochastic Hill Climber");
 		shcTour = Algorithms.SHC(tour, numberOfIterations, stochasticTemperature, true);
-		saveResults(shcTour, "StochasticHillClimber", true);
+		Tools.saveResults(shcTour, "StochasticHillClimber", true);
 
 		System.out.println("Random Mutation Hill Climber");
 		rmhcTour = Algorithms.RMHC(tour, numberOfIterations, true);
-		saveResults(rmhcTour, "RandomMutationHillClimbing", true);
+		Tools.saveResults(rmhcTour, "RandomMutationHillClimbing", true);
 	}
 
-	private static void saveResults(ArrayList<Integer> tour, String fileName, boolean appendMode) {
-		double fitness = Performance.CalculateFitness(tour);
-		printToFile(fitness,
-				Performance.CalculateEfficiencyOfMST(fitness),
-				Performance.CalculateEfficiency(fitness),
-				"results/" + fileName + ".txt", appendMode);
-	}
-
-	private static void printToFile(double fitness, double mst, double op, String filename, boolean appendMode) {
-		String fitnessString = Double.toString(fitness);
-		String mstString = Double.toString(mst);
-		String opString = Double.toString(op);
-
-		try {
-			FileWriter writer = new FileWriter(filename, appendMode);
-			writer.write(fitnessString + "," + mstString + "," + opString);
-			writer.write("\r\n");   // New Line
-			writer.close();
-		} catch (IOException e) {
-			System.out.println("ERROR. SPECIFIED OUTPUT FILE NOT FOUND.");
-			e.printStackTrace();
-		}
-	}
 }
 

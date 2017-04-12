@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -173,5 +175,45 @@ public class Tools {
 		System.out.println("Tep: " + t);
 		System.out.println();
 		return t;
+	}
+
+	/**
+	 * Method handling file saving for each experiment ran, data exported a CSV txt file
+	 *
+	 * @param tour       tour to calculate the fitness for
+	 * @param fileName   name of the file to save the results as
+	 * @param appendMode appending mode (triggers addition of data or complete overwrite)
+	 */
+	static void saveResults(ArrayList<Integer> tour, String fileName, boolean appendMode) {
+		double fitness = Performance.CalculateFitness(tour);
+		printToFile(fitness,
+				  Performance.CalculateEfficiencyOfMST(fitness),
+				  Performance.CalculateEfficiency(fitness),
+				  "results/" + fileName + Main.numberOfCities + ".txt", appendMode);
+	}
+
+	/**
+	 * Prints the fitness, mst, and op to a text file in the form of CSV
+	 *
+	 * @param fitness    fitness to be saved
+	 * @param mst        mst to be saved
+	 * @param op         op to be saved
+	 * @param filename   name of the file
+	 * @param appendMode appending mode (triggers addition of data or complete overwrite)
+	 */
+	private static void printToFile(double fitness, double mst, double op, String filename, boolean appendMode) {
+		String fitnessString = Double.toString(fitness);
+		String mstString = Double.toString(mst);
+		String opString = Double.toString(op);
+
+		try {
+			FileWriter writer = new FileWriter(filename, appendMode);
+			writer.write(fitnessString + "," + mstString + "," + opString);
+			writer.write("\r\n");   // New Line
+			writer.close();
+		} catch (IOException e) {
+			System.out.println("ERROR. SPECIFIED OUTPUT FILE NOT FOUND.");
+			e.printStackTrace();
+		}
 	}
 }
