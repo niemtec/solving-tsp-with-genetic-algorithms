@@ -12,7 +12,7 @@ import java.util.Collections;
 
 public class Main {
 	static int numberOfCities = 48;
-	static int numberOfIterations = 10000;
+	static int numberOfIterations = 1000000;
 	static double[][] distanceArray;
 
 	public static void main(String args[]) {
@@ -20,6 +20,8 @@ public class Main {
 		double fitness;
 
 		distanceArray = Tools.LoadDataFile(numberOfCities);
+
+		System.out.println("> NUMBER OF ITERATIONS SELECTED: " + numberOfIterations + ".");
 
 		//Populate the cities
 		tour = Tools.PopulateCities(numberOfCities);
@@ -29,26 +31,28 @@ public class Main {
 		//Starting temperature is 2.5% of the total problem space as per lecture slides
 		double stochasticTemperature = numberOfCities * 0.025;
 
-		System.out.println("Calculating the cooling rate");
+		System.out.println("> CALCULATING COOLING RATE.");
 		double coolingRate = Tools.CalculateCoolingRate(stochasticTemperature, numberOfIterations);
 		System.out.println("Cooling Rate: " + coolingRate);
 
-		System.out.println("Simulated Annealing");
+		System.out.println("> SIMULATED ANNEALING RUNNING.");
 		//Starting temperature derived from running various experiments
 		saTour = Algorithms.SA(tour, 10000.0, numberOfIterations, coolingRate, true);
 		Tools.saveResults(saTour, "SimulatedAnnealing", true);
 
-		System.out.println("Random Restart Hill Climber");
+		System.out.println("> RANDOM RESTART HILL CLIMBER RUNNING.");
 		rrhcTour = Algorithms.RRHC(tour, numberOfIterations, true);
 		Tools.saveResults(rrhcTour, "RandomRestartHillClimber", true);
 
-		System.out.println("Stochastic Hill Climber");
+		System.out.println("> STOCHASTIC HILL CLIMBER RUNNING.");
 		shcTour = Algorithms.SHC(tour, numberOfIterations, stochasticTemperature, true);
 		Tools.saveResults(shcTour, "StochasticHillClimber", true);
 
-		System.out.println("Random Mutation Hill Climber");
+		System.out.println("> RANDOM MUTATION HILL CLIMBER RUNNING.");
 		rmhcTour = Algorithms.RMHC(tour, numberOfIterations, true);
 		Tools.saveResults(rmhcTour, "RandomMutationHillClimbing", true);
+
+		System.out.println("> CALCULATIONS COMPLETE.");
 	}
 
 }

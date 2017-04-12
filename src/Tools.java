@@ -55,7 +55,7 @@ public class Tools {
 		double[][] array;
 		array = TSP.readArrayFile(baseFileLocation, " ");
 
-		System.out.println("TSP Data file loaded");
+		System.out.println("> TSP DATA FILE LOADED.");
 
 		return array;
 	}
@@ -189,7 +189,7 @@ public class Tools {
 		printToFile(fitness,
 				  Performance.CalculateEfficiencyOfMST(fitness),
 				  Performance.CalculateEfficiency(fitness),
-				  "results/" + fileName + Main.numberOfCities + ".txt", appendMode);
+				  "results/" + Main.numberOfCities + "_" + Main.numberOfIterations + "_" + fileName + ".txt", appendMode);
 	}
 
 	/**
