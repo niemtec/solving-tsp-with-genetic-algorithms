@@ -11,17 +11,17 @@ import java.util.Collections;
  */
 
 public class Main {
-	static int numberOfCities = 48;
-	static int numberOfIterations = 1000000;
+	static int numberOfCities = 442;
+	static int numberOfIterations = 10000;
 	static int numberOfRepetitions = 0;
 	static double[][] distanceArray;
 
 	public static void main(String args[]) {
 		ArrayList<Integer> tour, saTour, rrhcTour, rmhcTour, shcTour;
 
-//		while (numberOfIterations <= 100000) {
-//			for (numberOfRepetitions = 0; numberOfRepetitions < 20; numberOfRepetitions++) {
-//				System.out.println("> RUNNING REPETITION NUMBER " + numberOfRepetitions + ".");
+		while (numberOfIterations <= 100000) {
+			for (numberOfRepetitions = 0; numberOfRepetitions < 10; numberOfRepetitions++) {
+				System.out.println("> RUNNING REPETITION NUMBER " + numberOfRepetitions + ".");
 
 				distanceArray = Tools.LoadDataFile(numberOfCities);
 
@@ -32,8 +32,10 @@ public class Main {
 				//Pick a random starting point in the search space
 				Collections.shuffle(tour);
 
-				//Starting temperature is 2.5% of the total problem space as per lecture slides
-				double stochasticTemperature = numberOfCities * 0.025;
+				// T = f/k
+				double stochasticTemperature = Performance.CalculateFitness(tour) / 1000;
+				double annealingTemperature = Performance.CalculateFitness(tour) / 250;
+
 
 				System.out.println("> CALCULATING COOLING RATE.");
 				double coolingRate = Tools.CalculateCoolingRate(stochasticTemperature, numberOfIterations);
@@ -41,23 +43,23 @@ public class Main {
 
 				System.out.println("> SIMULATED ANNEALING RUNNING.");
 				//Starting temperature derived from running various experiments
-				saTour = Algorithms.SA(tour, 10000.0, numberOfIterations, coolingRate, true);
-//				Tools.saveResults(saTour, "SimulatedAnnealing", true);
+				saTour = Algorithms.SA(tour, annealingTemperature, numberOfIterations, coolingRate, true);
+				Tools.saveResults(saTour, "SimulatedAnnealing", true);
 
 				System.out.println("> RANDOM RESTART HILL CLIMBER RUNNING.");
 				rrhcTour = Algorithms.RRHC(tour, numberOfIterations, true);
-//				Tools.saveResults(rrhcTour, "RandomRestartHillClimber", true);
+				Tools.saveResults(rrhcTour, "RandomRestartHillClimber", true);
 
 				System.out.println("> STOCHASTIC HILL CLIMBER RUNNING.");
 				shcTour = Algorithms.SHC(tour, numberOfIterations, stochasticTemperature, true);
-//				Tools.saveResults(shcTour, "StochasticHillClimber", true);
+				Tools.saveResults(shcTour, "StochasticHillClimber", true);
 
 				System.out.println("> RANDOM MUTATION HILL CLIMBER RUNNING.");
 				rmhcTour = Algorithms.RMHC(tour, numberOfIterations, true);
-//				Tools.saveResults(rmhcTour, "RandomMutationHillClimbing", true);
-//			}
-//			numberOfIterations = numberOfIterations + 10000;
-//		}
+				Tools.saveResults(rmhcTour, "RandomMutationHillClimbing", true);
+			}
+			numberOfIterations = numberOfIterations + 10000;
+		}
 
 		System.out.println("> CALCULATIONS COMPLETE.");
 	}
