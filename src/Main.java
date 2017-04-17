@@ -11,7 +11,7 @@ import java.util.Collections;
  */
 
 public class Main {
-	static int numberOfCities = 442;
+	static int numberOfCities = 48;
 	static int numberOfIterations = 1000000;
 	static int numberOfRepetitions = 0;
 	static double[][] distanceArray;

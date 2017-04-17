@@ -125,6 +125,15 @@ public class Algorithms {
 		return tour;
 	}
 
+	/**
+	 * Simulated Annealing Algorithm
+	 * @param tour starting tour
+	 * @param temperature  temperature for the acceptance function (usually 25% of n) but changes dynamically
+	 * @param numberOfIterations number of times to run the algorithm for
+	 * @param coolingRate rate at which the temperature of the algorithm should decrease with each iteration
+	 * @param printReport decides whether to print fitness or not
+	 * @return returns the most efficient tour found
+	 */
 	static ArrayList<Integer> SA(ArrayList<Integer> tour, double temperature, int numberOfIterations, double coolingRate, boolean printReport) {
 		ArrayList<Integer> oldTour;
 		double fitness = 0, newFitness, p;
