@@ -2,13 +2,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * The Travelling Salesperson Problem
- * Laboratory 15 Worksheet
- * CS2004 Algorithms and their Applications
- * Brunel University London
  * Created by Jakub Adrian Niemiec (@niemtec) on 2017-03-25.
- * Student ID: 1500408
- */
+  */
 
 public class Main {
 	static int numberOfCities = 442;
@@ -64,4 +59,3 @@ public class Main {
 		System.out.println("> CALCULATIONS COMPLETE.");
 	}
 }
-
