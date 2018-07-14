@@ -47,7 +47,7 @@ Another indicator of the quality of a given solution was its comparison against 
 The accuracy of results is evaluated by the evaluation functions implemented in the code i.e. the fitness, MST, and OT. Overall, the results provided demonstrate a high degree of accuracy and show that as the number of cities increases, it becomes more difficult to calculate the optimal tour in a given number of iterations.
 
 ## Results Summary
-![Average OT Score for Each Algorithm after 100K iterations](graphs/A Bar Chart Showing Average OT Score for Each Algorithm vs Datasets After 100 000 Iterations.png)
+![Average OT Score for Each Algorithm after 100K iterations](graphs/A-Bar-Chart-Showing-Average-OT-Score-for-Each-Algorithm-vs-Datasets-After-100-000-Iterations.png)
 
 The bar graph above demonstrates the efficiency of the algorithm as compared to the optimal tour. Here we can deduce that the efficiency drops as the size of the problem is increased; the algorithms do not find the optimal solution in the number of iterations they run for in the larger problem space.
 Overall, Simulated annealing provides the best possible fitness across all of the algorithms.
@@ -56,7 +56,7 @@ In majority of the datasets tested the Stochastic Hill Climber provided a greate
 
 Random Mutation Hill Climbing performed rather well overall, however, it often stuck in the local optima rather than a global one thus terminating the search for optimal solution early while ignoring the global best solution. This was addressed by using the Random Restart Hill Climber which had a greater chance of avoiding the local optima as best fitness was saved across multiple runs. However, running the algorithm multiple times meant that the number of iterations within each run had to be lowered in order to ensure that all algorithms run for the ∑ number of equal operations. Which often resulted in poorer fitness found.
 
-![Average MST for Each Algorithm after 100K iterations](graphs/A Bar Chart Showing Average MST for Each Algorithm vs Datasets After 100 000 Iterations.png)
+![Average MST for Each Algorithm after 100K iterations](graphs/A-Bar-Chart-Showing-Average-MST-for-Each-Algorithm-vs-Datasets-After-100-000-Iterations.png)
 
 A spanning tree is a sub-graph that is also a tree containing all of the nodes of the super-graph. The minimum spanning tree represents the spanning tree with the minimum cost (calculated by adding all the edge weights) and can be used to determine the lowest possible cost of the given tour. The graph above shows the average MST score for each algorithm as tested against the data set (at 100 000 iterations).
 
